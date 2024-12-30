@@ -1,0 +1,386 @@
+:root {
+    --primary-color: #22c522;
+    --primary-dark: #008000;
+    --primary-light: #197419;
+    --bg-dark: #000000;
+    --surface-dark: #121212;
+    --border-dark: #1a1a1a;
+    --text-white: #ffffff;
+    --text-gray: #a0a0a0;
+    --hover-color: #2edc2e;
+    --card-bg: #1e1e1e;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--bg-dark);
+    color: var(--text-white);
+    margin: 0;
+    padding: 0;
+    line-height: 1.6;
+}
+
+.navbar {
+    background-color: var(--surface-dark);
+    padding: 1rem 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.nav-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 1rem;
+}
+
+.nav-left, .nav-right {
+    display: flex;
+    align-items: center;
+}
+
+.container2 .text {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.nav-links {
+    margin-left: 2rem;
+}
+
+.nav-link {
+    color: var(--text-white);
+    text-decoration: none;
+    margin-right: 1rem;
+    transition: color 0.3s ease;
+}
+
+.nav-link:hover {
+    color: var(--primary-color);
+}
+
+.search-container {
+    display: flex;
+    align-items: center;
+    background-color: var(--border-dark);
+    border-radius: 20px;
+    padding: 0.5rem 1rem;
+    margin-right: 1rem;
+}
+
+.search-container input {
+    background: transparent;
+    border: none;
+    color: var(--text-white);
+    outline: none;
+}
+
+.search-container i {
+    color: var(--text-gray);
+}
+
+.icon-button {
+    position: relative;
+    background: transparent;
+    border: none;
+    color: var(--text-white);
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-left: 1rem;
+    transition: color 0.3s ease;
+}
+
+.icon-button:hover {
+    color: var(--primary-color);
+}
+
+.icon-button:hover .tip-content {
+    visibility: visible;
+    opacity: 1;
+    transform: translateX(-50%) translateY(10px); /* Adjust position slightly */
+}
+
+/* Tooltip styling */
+.tip-content {
+    visibility: hidden;
+    width: auto; /* Auto width to fit the text */
+    min-width: 100px; /* Minimum width to ensure it's readable */
+    background-color: var(--surface-dark); /* Darker background for better contrast */
+    color: var(--text-white);
+    text-align: center;
+    border-radius: 5px;
+    padding: 7px 10px;
+    position: absolute;
+    top: 100%; /* Position below the button */
+    left: 50%;
+    transform: translateX(-50%) translateY(10px); /* Keep it below the button */
+    opacity: 0;
+    transition: opacity 0.3s ease, transform 0.3s ease; /* Smooth transition */
+    box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.3);
+    z-index: 1;
+}
+
+/* Optional: Add hover effects on the tooltip itself for better user interaction */
+.icon-button:hover .tip-content:hover {
+    background-color: var(--primary-dark);
+}
+
+
+.main-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+.featured-section {
+    background: linear-gradient(to right, var(--primary-dark), var(--primary-light));
+    border-radius: 10px;
+    padding: 3rem;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.featured-content h1 {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.featured-content p {
+    font-size: 1.1rem;
+    margin-bottom: 2rem;
+}
+
+.explore-button {
+    background-color: var(--text-white);
+    color: var(--primary-dark);
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    border-radius: 25px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.explore-button:hover {
+    background-color: var(--hover-color);
+    color: var(--text-white);
+}
+
+.products-section {
+    background-color: var(--surface-dark);
+    border-radius: 10px;
+    padding: 2rem;
+}
+
+.products-header {
+    display: flex;
+    flex-wrap: wrap; /* Allow wrapping if needed */
+    justify-content: space-between; /* Space items across the container */
+    align-items: center; /* Align items vertically */
+    margin-bottom: 2rem;
+}
+
+.products-header h2 {
+    font-size: 1.8rem;
+    color: var(--primary-color);
+    flex: 1; /* Let the heading take up space */
+    margin: 0; /* Remove bottom margin */
+}
+
+.filter-toggle-btn {
+    background-color: var(--border-dark);
+    color: var(--text-white);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    margin-left: auto; /* Push the button to the end */
+}
+
+.filter-toggle-btn:hover {
+    background-color: var(--primary-color);
+}
+
+.sort-select {
+    background-color: var(--border-dark);
+    color: var(--text-white);
+    border: none;
+    padding: 0.5rem 1rem; /* Adjust padding for consistent size */
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem; /* Make font size consistent */
+    margin-left: 1rem; /* Space between button and dropdown */
+}
+
+.product-list {
+    display: flex;
+    flex-wrap: wrap; /* Allows wrapping to next row when items exceed the row width */
+    gap: 2rem; /* Space between cards */
+    justify-content: space-between; /* Distribute items with space between */
+}
+
+/* Product Card */
+.product-card {
+    background-color: var(--surface-dark);
+    border-radius: 0.5rem;
+    overflow: hidden;
+    position: relative;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    flex: 0 1 calc(33.33% - 2rem); /* 3 products per row with gap adjustment */
+    box-sizing: border-box; /* Include padding and borders in width calculation */
+}
+
+.product-card:hover {
+    transform: translateY(-0.25rem);
+    box-shadow: 0 4px 20px rgba(34, 197, 94, 0.2);
+}
+
+
+.product-image img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.product-info {
+    padding: 1rem;
+}
+
+.product-info h3 {
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.product-info p {
+    font-size: 0.9rem;
+    color: var(--text-gray);
+    margin-bottom: 0.5rem;
+}
+
+.product-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.price {
+    font-weight: bold;
+    color: var(--primary-color);
+}
+
+.rating {
+    color: var(--text-gray);
+}
+
+.product-overlay {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+}
+
+.product-action-btn {
+    background-color: var(--surface-dark);
+    color: var(--text-white);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 0.5rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.product-action-btn:hover {
+    background-color: var(--primary-color);
+}
+
+.overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.7);
+    z-index: 1000;
+}
+
+.popup {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: var(--surface-dark);
+    padding: 2rem;
+    border-radius: 10px;
+    z-index: 1001;
+    text-align: center;
+}
+
+.popup p {
+    margin-bottom: 1rem;
+}
+
+.btn {
+    background-color: var(--primary-color);
+    color: var(--text-white);
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background-color: var(--hover-color);
+}
+
+@media (max-width: 768px) {
+    .nav-container {
+        flex-direction: column;
+    }
+
+    .nav-left, .nav-right {
+        width: 100%;
+        justify-content: space-between;
+        margin-bottom: 1rem;
+    }
+
+    .nav-links {
+        margin-left: 0;
+    }
+
+    .search-container {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 1rem;
+    }
+
+    .products-header {
+        flex-direction: row;
+        align-items: center;
+    }
+
+    .filter-toggle-btn {
+        margin-top: 0;
+    }
+
+    .product-grid {
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+}
+
+
+

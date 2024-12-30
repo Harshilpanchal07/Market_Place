@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/otp.css' %}">
+    <title>Verify OTP</title>
+</head>
+<body>
+    {% if messages %}
+    <div class="messages">
+        {% for message in messages %}
+        <div class="alert {{ message.tags }}">
+            {{ message }}
+        </div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Background Section -->
+    <div class="container">
+        <div class="background">
+            <div class="star-field"></div>
+            <div class="gradient-overlay"></div>
+            <div class="radial-overlay"></div>
+            <div class="letters-container" id="lettersContainer"></div>
+        </div>
+    </div>
+
+    <form method="post" id="otp-form">
+        {% csrf_token %}
+        <h2>Verify OTP</h2>
+        <p>
+            Your OTP is valid for:
+            <strong id="countdown" data-remaining-seconds="{{ remaining_seconds }}"></strong>
+        </p>
+        <label for="otp">Enter the 6-digit OTP:</label>
+        <div class="otp-container">
+            <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 'otp2')" id="otp1" autocomplete="off" required>
+            <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 'otp3')" id="otp2" autocomplete="off" required>
+            <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 'otp4')" id="otp3" autocomplete="off" required>
+            <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 'otp5')" id="otp4" autocomplete="off" required>
+            <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 'otp6')" id="otp5" autocomplete="off" required>
+            <input type="text" class="otp-input" maxlength="1" id="otp6" oninput="combineOtp()" autocomplete="off" required>
+        </div>        
+        <input type="hidden" name="otp" id="hidden-otp">
+        <button type="submit">Verify</button>
+    </form>
+    <script src="{% static 'js/otp.js' %}"></script>
+</body>
+</html>

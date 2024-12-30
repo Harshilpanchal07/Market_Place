@@ -1,0 +1,708 @@
+:root {
+    --primary-color: #22c522;
+    --secondary-color: #008000;
+    --background-color: #000000;
+    --surface-color: #121212;
+    --text-color: #ffffff;
+    --border-color: #1a1a1a;
+    --hover-color: #004000;
+    --accent-color: #197419;
+
+        /* Enhanced Variables */
+    --gradient-primary: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+    --gradient-surface: linear-gradient(145deg, #1b1b1b, var(--surface-color));
+    --shadow-light: 0 4px 6px rgba(0, 0, 0, 0.2);
+    --shadow-heavy: 0 8px 16px rgba(0, 0, 0, 0.4);
+    --transition-smooth: all 0.3s ease;
+    --border-radius-default: 8px;
+}
+
+/* Global font-family */
+* {
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Body styling */
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    background: var(--background-color);
+    color: var(--text-color);
+}
+
+/* Profile content container */
+.profile-content {
+    width: 90%;
+    max-width: 1200px;
+    height: 85vh;
+    display: flex;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.15);
+    overflow: hidden;
+    background: var(--surface-color);
+}
+
+/* Sidebar styling */
+.sidebar {
+    width: 280px;
+    padding: 1rem;
+    background: var(--background-color);
+    border-right: 1px solid var(--border-color);
+    overflow-y: auto;
+    color: var(--text-color);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between; /* This ensures the logout button stays at the bottom */
+    height: 100%; /* Ensure the sidebar stretches to fill the height */
+}
+
+/* Profile header */
+.profile-header {
+    text-align: start;
+    margin-bottom: 2rem;
+}
+
+.profile-info h2 {
+    margin: 0;
+    color: var(--text-color);
+    font-size: 1.8rem;
+}
+
+.profile-info p {
+    margin: 0.5rem 0;
+    color: var(--primary-color);
+}
+
+/* Navigation styling */
+.profile-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    flex-grow: 1; /* Ensure the navigation items take available space */
+}
+
+.nav-item {
+    padding: 1rem;
+    background: transparent;
+    border: 1px solid var(--border-color);
+    color: var(--text-color);
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    font-size: 18px; /* Increase font size */
+    justify-content: flex-start; /* Align items to the left */
+    align-items: center; /* Vertically center icon and text */
+}
+
+.nav-item i {
+    font-size: 18px; /* Icon size */
+    margin-right: 10px; /* Space between icon and text */
+}
+
+.nav-item:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    transform: translateX(4px);
+}
+
+.nav-item.active {
+    background-color: var(--primary-color);
+    transform: translateX(8px);
+}
+
+/* Red Logout button at the bottom */
+.logout-link {
+    text-decoration: none; /* Removes the underline */
+    color: inherit; /* Inherits the color from parent elements */
+}
+
+.logout-btn {
+    background-color: red;
+    color: white;
+    border: none;
+    width: 100%;
+    padding: 1rem;
+    display: flex;
+    justify-content: flex-start; /* Aligns icon and text to the left */
+    align-items: center; /* Vertically centers the icon and text */
+    font-size: 18px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+    cursor: pointer;
+    margin-top: auto; /* Pushes it to the bottom */
+}
+
+.logout-btn i {
+    font-size: 20px; /* Slightly larger icon */
+    margin-right: 10px; /* Space between icon and text */
+}
+
+.logout-btn:hover {
+    background-color: darkred;
+    transform: translateX(4px); /* Adds slight hover effect */
+}
+/* Main content styling */
+.main-content {
+    flex-grow: 1;
+    background: var(--surface-color);
+    padding: 1rem;
+    overflow-y: auto;
+}
+
+/* Tab content styling */
+.tab-content {
+    display: none;
+    visibility: hidden;
+    animation: fadeOut 0.3s ease-out; /* Fade out when hidden */
+}
+
+.tab-content.active {
+    display: block;
+    visibility: visible;
+    animation: fadeIn 0.5s ease-out; /* Fade in when visible */
+}
+/* Tab Change Animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+/* Orders section */
+.orders-list {
+    display: grid;
+    gap: 0.5rem;
+}
+
+.order-item {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: transform 0.2s, border-color 0.3s;
+}
+
+.order-item:hover {
+    transform: translateY(-2px);
+    border-color: var(--primary-color);
+}
+
+.order-status {
+    padding: 0.25rem 0.75rem;
+    border-radius: 20px;
+    font-size: 0.875rem;
+}
+
+.order-status.completed {
+    background-color: var(--secondary-color);
+    color: var(--text-color);
+}
+
+.order-status.pending {
+    background-color: var(--hover-color);
+    color: var(--text-color);
+}
+
+.order-status.shipped {
+    background-color: var(--accent-color);
+    color: var(--background-color);
+}
+.order-details {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 1.5rem; /* Adds space between the header and details */
+}
+
+
+/* Product grid layout */
+.product-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+}
+
+.product-card {
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.product-card img {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+    border-radius: 4px;
+}
+
+/* Watchlist Button Colors */
+.product-card .btn-primary {
+    background: var(--primary-color);
+    color: var(--text-color);
+    border: 1px solid var(--primary-color);
+}
+
+.product-card .btn-primary:hover {
+    background: var(--hover-color);
+    color: var(--background-color);
+}
+
+.product-card .btn-secondary {
+    background: var(--secondary-color);
+    color: var(--text-color);
+    border: 1px solid var(--secondary-color);
+}
+
+.product-card .btn-secondary:hover {
+    background: var(--hover-color);
+    color: var(--background-color);
+}
+
+
+/* Cart items */
+.cart-items {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.cart-item {
+    display: grid;
+    grid-template-columns: 100px 1fr auto;
+    gap: 1rem;
+    align-items: center;
+    background: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.checkout-btn {
+    background: var(--primary-color);
+    color: var(--background-color);
+    padding: 0.5rem 1rem; /* Adjusts size */
+    font-size: 1rem;
+    border: none;
+    border-radius: 8px;
+    margin-left: auto; /* Aligns button to the right */
+    display: block; /* Ensures proper alignment */
+    transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.checkout-btn:hover {
+    background: var(--hover-color);
+    transform: scale(1.05);
+}
+
+
+.cart-total {
+    display: flex;
+    justify-content: space-between;
+    font-weight: bold;
+}
+
+.sidebar, .main-content, .nested-tab-content {
+    background: var(--surface-color);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .orders-list {
+        flex-direction: column;
+    }
+
+    .order-item {
+        flex: 1 1 100%;
+    }
+}
+
+.nested-tabs {
+    margin-top: 20px;
+}
+
+.nested-tab-content {
+    display: none;
+    visibility: hidden;
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: var(--border-radius-default);
+    background: var(--hover-color);
+    color: var(--text-color);
+    box-shadow: var(--shadow-light);
+    animation: fadeIn 0.3s ease-in-out;
+}
+
+.nested-tab-content.active {
+    display: block;
+    visibility: visible;
+}
+
+.nested-nav-item {
+    padding: 10px 15px;
+    cursor: pointer;
+    background: var(--background-color);
+    color: var(--text-color);
+    border-radius: var(--border-radius-default) var(--border-radius-default) 0 0;
+    transition: var(--transition-smooth);
+    box-shadow: var(--shadow-light);
+}
+
+.nested-nav-item:hover {
+    background: var(--hover-color);
+    color: var(--text-color);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-heavy);
+}
+
+.nested-nav-item.active {
+    background: var(--gradient-primary);
+    color: var(--text-color);
+    box-shadow: var(--shadow-heavy);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes fadeOut {
+    from {
+        opacity: 1;
+        transform: translateY(0);
+    }
+    to {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+}
+/* Profile form styling */
+#profile-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    position: relative;
+}
+#profile-container {
+    padding: 20px;
+    background-color: var(--border-color);
+    border-radius: 8px;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group label {
+    margin-top: 0.8rem;
+    margin-bottom: 0.3rem;
+}
+
+.form-group input {
+    padding: 0.8rem;
+    border: 1px solid var(--accent-color);
+    border-radius: 7px;
+    background: var(--border-color);
+    color: var(--text-color);
+}
+
+.form-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+    margin-top: 1rem;
+}
+
+#edit-btn, #save-btn, #change-password {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+#edit-btn, #save-btn {
+    background: var(--primary-color);
+    color: #fff;
+}
+
+#edit-btn:hover {
+    background: var(--primary-color-dark);
+}
+
+#change-password {
+    background: var(--primary-color);
+    color: #fff;
+}
+
+#change-password:hover {
+    background: var(--primary-color-dark);
+}
+/* Text Styling for Headings */
+h4 {
+    color: #fff;
+    margin-bottom: 20px;
+    font-size: 22px;
+    font-weight: 600;
+}
+
+/* StoreOn Container */
+.store-on-container {
+    max-width: 750px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Title Styling */
+.store-on-title {
+    font-size: 24px;
+    font-weight: 600;
+    text-align: start;
+    margin-bottom: 20px;
+}
+
+/* Description Text */
+.store-on-description {
+    font-family: 'Great Vibes', cursive;
+    font-size: 1.5rem;
+    line-height: 1.5;
+    color:var(--text-color);
+    margin-bottom: 20px;
+    text-align: start;
+}
+.store-on-description .start-letter {
+    font-family: 'Great Vibes', cursive;
+    font-size: 3rem;
+    line-height: 1.8;
+    color:var(--primary-color);
+    display: inline-block;
+    margin-right: 5px;
+}
+
+/* Dashboard Link Styling */
+.dashboard-link {
+    padding: 0.75rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.dashboard-link:hover {
+    background: var(--primary-color-dark);
+    color: #fff;
+}
+
+.redirect-button {
+    background-color: var(--primary-color);
+    color: var(--text-color); /* Green color */
+    border: 2px solid var(--border-color);
+    padding: 12px 24px;
+    font-size: 16px;
+    text-align: center;
+    border-radius: 5px;
+    display: inline-block;
+    cursor: pointer;
+    transition: background 0.3s ease;
+}
+
+.redirect-button:hover {
+    background-color: var(--border-color);
+}
+
+.help-support-container {
+    max-width: 750px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+/* Responsive Design */
+@media (max-width: 768px) {
+    .nested-tab-content {
+        padding: 15px;
+    }
+
+    .store-on-container {
+        padding: 15px;
+        margin: 10px;
+    }
+
+    .store-on-title {
+        font-size: 22px;
+    }
+
+    .store-on-description {
+        font-size: 14px;
+    }
+
+    .become-seller-form {
+        width: 100%;
+        padding: 15px;
+    }
+
+    .become-seller-btn {
+        width: 100%;
+    }
+}
+
+
+/* Button and Input Responsive Design */
+@media (max-width: 768px) {
+    #profile-container {
+        padding: 15px;
+        max-width: 100%;
+    }
+
+    form .form-group input {
+        max-width: 100%;
+    }
+}
+
+/* Dashboard Tab Styles */
+.dashboard-container {
+    background-color: var(--surface-color);
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.dashboard-title {
+    color: var(--primary-color);
+    font-size: 1.75rem;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-description {
+    color: var(--text-color);
+    margin-bottom: 2rem;
+}
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 1.5rem;
+    margin-bottom: 2rem;
+}
+
+.dashboard-card {
+    background-color: var(--background-color);
+    border-radius: 8px;
+    padding: 1.5rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.dashboard-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.dashboard-card h5 {
+    color: var(--primary-color);
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+}
+
+.dashboard-card p {
+    color: var(--text-color);
+}
+
+.dashboard-link {
+    display: inline-block;
+    background-color: var(--primary-color);
+    color: var(--background-color);
+    text-decoration: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+}
+
+.dashboard-link:hover {
+    background-color: var(--hover-color);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+    .dashboard-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.messages {
+    position: fixed; /* Make it float above the rest of the content */
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%); /* Center horizontally */
+    z-index: 1000; /* Ensure it's above other elements */
+    width: 90%; /* Adjust width to fit the screen on small devices */
+    max-width: 400px;
+    padding: 15px;
+    border-radius: 20px; /* Increased border-radius for smoother roundness */
+    text-align: center;
+    font-size: 1rem;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 4px 20px rgba(10, 106, 34, 0.7); /* Softer, more pronounced shadow */
+    animation: fade-in 0.5s ease-in-out, fade-out 5s ease-in-out forwards;
+}
+
+/* Message background colors */
+.messages .error {
+    color: #ff4c4c; /* White text for contrast */
+}
+
+.messages .success {
+    color: #00ff7f; /* Dark text for contrast */
+}
+
+/* Fade-in and fade-out animations */
+@keyframes fade-in {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+@keyframes fade-out {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
+    }
+}

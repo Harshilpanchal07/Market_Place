@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/seller_dashboard.css' %}">
+    <script src="{% static 'js/dashboard.js' %}" type="module"></script>
+    <link href="https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css" rel="stylesheet">
+</head>
+<body>
+    {% if messages %}
+    <div class="messages">
+       {% for message in messages %}
+           <p class="{{ message.tags }}">{{ message }}</p>
+       {% endfor %}
+   </div>
+   {% endif %}
+    <div class="container">
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <div class="logo">
+                <h1>{{ seller.store_name }}  Dashboard</h1>
+            </div>
+            <nav>
+                <button class="nav-item active" data-tab="dashboard">
+                    <i class='bx bxs-dashboard'></i>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-item" data-tab="profile">
+                    <i class='bx bxs-user'></i>
+                    <span>Profile</span>
+                </button>
+                <button class="nav-item" data-tab="your_products">
+                    <i class='bx bx-paint'></i>
+                    <span>Manage Your Products</span>
+                </button>
+                <button class="nav-item" data-tab="messages">
+                    <i class='bx bxs-message'></i>
+                    <span>Messages</span>
+                </button>
+                <button class="nav-item" data-tab="settings">
+                    <i class='bx bxs-cog'></i>
+                    <span>Settings</span>
+                </button>
+            </nav>
+        </div>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <header>
+                <h1 id="page-title">Dashboard</h1>
+            </header>
+
+            <!-- Dashboard Content -->
+            <div class="tab-content active" id="dashboard">
+                <div class="stat-cards">
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3>Total Products</h3>
+                            <p>{{ seller.products.count }}</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class='bx bxs-shopping-bag'></i>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3>Total Sales</h3>
+                            <p>$45,678</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class='bx bx-dollar'></i>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3>New Messages</h3>
+                            <p>23</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class='bx bxs-message'></i>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-info">
+                            <h3>Active Users</h3>
+                            <p>1,234</p>
+                        </div>
+                        <div class="stat-icon">
+                            <i class='bx bxs-group'></i>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Profile Content -->
+            <div class="tab-content" id="profile">
+                <div class="profile-container">
+                    <div class="profile-header">
+                        <div class="header-left">
+                            <h2>Welcome, {{ user.username }}</h2>
+                            <p>{{ user.email }}</p>
+                        </div>
+                    </div>
+
+                    <div class="profile-details">
+                        <div class="profile-item">
+                            <i class="fa fa-store"></i>
+                            <div class="profile-text">
+                                <h3>Store Name</h3>
+                                <p>{{ seller.store_name }}</p>
+                            </div>
+                        </div>
+                        <div class="profile-item">
+                            <i class="fa fa-id-card"></i>
+                            <div class="profile-text">
+                                <h3>Store ID</h3>
+                                <p>{{ seller.store_id }}</p>
+                            </div>
+                        </div>
+                        <div class="profile-item">
+                            <i class="fa fa-user"></i>
+                            <div class="profile-text">
+                                <h3>Bio</h3>
+                                <p>{{ seller.store_bio }}</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Your Products Content -->
+            <div class="tab-content" id="your_products">
+                <div class="content-card">
+                    <a href="{% url 'add_product' %}" class="btn btn-success">Add New Product</a>
+
+                    <div class="card-container">
+                        {% for product in seller.products.all %}
+                        <div class="card">
+                            <img src="/media/{{ product.image }}" alt="{{ product.product_name }}" class="card-img"><!-- Add the product image URL -->
+                            <div class="card-content">
+                                <h4 class="card-title">{{ product.product_name }}</h4>
+                                <p class = "card-prise">${{ product.price }}</p>
+                                <p class="card-description">{{ product.product_description }}</p>
+                                <div class="card-actions">
+                                    <a href="{% url 'edit_product' product.product_id %}" class="btn btn-warning">Edit</a>
+                                    <a href="{% url 'delete_product' product.product_id %}" class="btn btn-danger">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                        {% empty %}
+                        <div class="card">
+                            <div class="card-content">
+                                <p>No products found.</p>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Messages Content -->
+            <div class="tab-content" id="messages">
+                <div class="content-card">
+                    <h2>Messages</h2>
+                    <p>Messages content goes here</p>
+                </div>
+            </div>
+
+            <!-- Settings Content -->
+            <div class="tab-content" id="settings">
+                <div class="content-card">
+                    <h2>Settings</h2>
+                    <p>Settings content goes here</p>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script src="{% static 'js/dashboard.js' %}"></script>
+</body>
+</html>

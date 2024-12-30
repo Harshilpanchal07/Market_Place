@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Become a Seller</title>
+    {% load static%}
+    <link rel="stylesheet" href="{% static 'css/seller_form.css' %}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="messages">
+        {% if messages %}
+            {% for message in messages %}
+                <p class="message {{ message.tags }}">{{ message }}</p>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <!-- Background Section -->
+    <div class="container">
+        <div class="background">
+            <div class="star-field"></div>
+            <div class="gradient-overlay"></div>
+            <div class="radial-overlay"></div>
+            <div class="letters-container" id="lettersContainer"></div>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <!-- Left side for Login -->
+        <div class="login-container">   
+            <div class="login-card">
+                <h2>Become a Seller</h2>
+                <form method="post" action="{% url 'seller_form' %}" enctype="multipart/form-data" id="sellerForm">
+                    {% csrf_token %}
+                    <div class="input-group">
+                        <label for="store_id">Store ID</label>
+                        <input type="text" id="store_id" name="store_id" value="{{ uuid }}" readonly>
+                    </div>
+                
+                    <div class="input-group">
+                        <label for="store_name">Store Name</label>
+                        <input type="text" id="store_name" name="store_name" placeholder="Enter your store name" required>
+                    </div>
+                
+                    <div class="input-group">
+                        <label for="about_your_store">About Your Store[BIO]</label>
+                        <textarea id="about_your_store" name="about_your_store" rows="4" placeholder="Tell us about your store" required></textarea>
+                    </div>
+                    <button type="submit" class="btn" id="submitBtn">Submit</button>
+                </form>            
+            </div>
+        </div>
+
+        <!-- Right side for logo -->
+        <div class="tc-container">
+            <div class="tc-card">
+                <h2>Term & Condition</h2>
+                <ol>
+                    <li>You must be a registered user on the platform to become a seller.</li>
+                    <li>All uploaded 3D assets must be original and not violate any copyrights.</li>
+                    <li>Sellers are responsible for ensuring the quality and usability of their assets.</li>
+                    <li>Uploaded assets must include at least one hashtag for better searchability.</li>
+                    <li>Sellers must provide accurate descriptions and metadata for their assets.</li>
+                    <li>Pricing of assets must comply with marketplace guidelines.</li>
+                    <li>Sellers will earn revenue after the marketplace fee is deducted.</li>
+                    <li>Withdrawals of earnings are subject to verification and minimum thresholds.</li>
+                    <li>Assets that receive multiple complaints may be subject to review or removal.</li>
+                    <li>Sellers must comply with all applicable laws regarding content creation and sales.</li>
+                    <li>Unauthorized use of external assets or plagiarism is strictly prohibited.</li>
+                    <li>Sellers are encouraged to engage with buyers for feedback and support.</li>
+                    <li>Refunds or disputes will be handled per the marketplace's policies.</li>
+                    <li>Repeated violations of terms may result in suspension or termination of seller status.</li>
+                    <li>By becoming a seller, you agree to all marketplace policies and terms.</li>
+                </ol>
+                <!-- Checkbox for agreeing to terms -->
+                <div style="margin-top: 20px;">
+                    <input type="checkbox" id="agree_terms" name="agree_terms" required>
+                    <label for="agree_terms" style="color: #00ff7f;">I agree to all terms and conditions</label>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="{% static 'js/s_form.js' %}"></script>
+</body>
+</html>
