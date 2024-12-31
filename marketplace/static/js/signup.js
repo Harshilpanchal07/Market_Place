@@ -1,91 +1,61 @@
-class StrokeAnimation {
-    constructor(container, letters = ['A', 'N', 'K']) {
-        this.container = container;
-        this.letters = letters;
-        this.init();
+document.addEventListener('DOMContentLoaded', function() {
+    const avatarImg = document.getElementById('avatar-img');
+    const avatarContainer = document.querySelector('.avatar-container');
+    const avatarOptions = document.getElementById('avatar-options');
+    const profilePictureInput = document.getElementById('profile-picture');
+    const avatarChoices = document.querySelectorAll('.avatar-choice');
+
+    // Function to randomly select an avatar
+    function selectRandomAvatar() {
+        const randomIndex = Math.floor(Math.random() * avatarChoices.length);
+        const randomAvatar = avatarChoices[randomIndex].querySelector('img');
+        updateAvatar(randomAvatar.src);
     }
 
-    createLetter(letter, delay) {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'letter-wrapper';
-
-        const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-        svg.setAttribute('width', '128');
-        svg.setAttribute('height', '128');
-        svg.setAttribute('viewBox', '0 0 100 100');
-        svg.classList.add('letter-svg');
-
-        const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-        text.setAttribute('x', '50');
-        text.setAttribute('y', '70');
-        text.setAttribute('text-anchor', 'middle');
-        text.setAttribute('fill', 'none');
-        text.setAttribute('stroke', '#10b981');
-        text.setAttribute('stroke-width', '30');
-        text.classList.add('stroke-text');
-        text.style.fontSize = '70px';
-        text.style.animationDelay = `${delay}s`;
-        text.textContent = letter;
-
-        // Add glow effect
-        const defs = document.createElementNS('http://www.w3.org/2000/svg', 'defs');
-        const filter = document.createElementNS('http://www.w3.org/2000/svg', 'filter');
-        filter.setAttribute('id', `glow-${letter}`);
-        
-        const feGaussianBlur = document.createElementNS('http://www.w3.org/2000/svg', 'feGaussianBlur');
-        feGaussianBlur.setAttribute('stdDeviation', '4');
-        feGaussianBlur.setAttribute('result', 'coloredBlur');
-        
-        filter.appendChild(feGaussianBlur);
-        defs.appendChild(filter);
-        svg.appendChild(defs);
-        
-        text.style.filter = `url(#glow-${letter})`;
-        
-        svg.appendChild(text);
-        wrapper.appendChild(svg);
-        return wrapper;
+    // Function to update the selected avatar
+    function updateAvatar(avatarSrc) {
+        avatarImg.src = avatarSrc;
+        profilePictureInput.value = avatarSrc.split('/').pop();  // Ensure this value is set
+        console.log('Profile Picture Value:', profilePictureInput.value);  // Check this in the console
+        hideAvatarOptions();
+    }
+    
+    // Function to show avatar options
+    function showAvatarOptions() {
+        avatarOptions.style.display = 'flex';
     }
 
-    init() {
-        this.render();
-        setInterval(() => this.render(), 6000);  // Repeat every 10 seconds
-        new FallingStars();
+    // Function to hide avatar options
+    function hideAvatarOptions() {
+        avatarOptions.style.display = 'none';
     }
 
-    render() {
-        this.container.innerHTML = '';
-        this.letters.forEach((letter, index) => {
-            const letterElement = this.createLetter(letter, index * 0.9);
-            this.container.appendChild(letterElement);
+    // Event listener for avatar container click
+    avatarContainer.addEventListener('click', function(e) {
+        e.stopPropagation();
+        showAvatarOptions();
+    });
+
+    // Event listeners for avatar choices
+    avatarChoices.forEach(choice => {
+        choice.addEventListener('click', function(e) {
+            e.stopPropagation();
+            const avatarSrc = this.querySelector('img').src;
+            updateAvatar(avatarSrc);
         });
-    }
-}
+    });
 
-// Initialize animation when DOM is loaded
-document.addEventListener('DOMContentLoaded', () => {
-    const container = document.getElementById('lettersContainer');
-    new StrokeAnimation(container);
+    // Hide avatar options when clicking outside
+    document.addEventListener('click', function(e) {
+        if (!avatarOptions.contains(e.target) && e.target !== avatarContainer) {
+            hideAvatarOptions();
+        }
+    });
+
+    // Initially hide avatar options
+    hideAvatarOptions();
+
+    // Randomly select an avatar on page load
+    selectRandomAvatar();
 });
-
-// Avatar modal functions
-function openAvatarModal() {
-    const modal = document.getElementById("avatarModal");
-    if (modal) {
-        modal.style.display = "flex";
-    }
-}
-
-function closeAvatarModal() {
-    const modal = document.getElementById("avatarModal");
-    if (modal) {
-        modal.style.display = "none";
-    }
-}
-
-function selectAvatar(avatarUrl) {
-    console.log("Selected Avatar URL:", avatarUrl);
-    document.getElementById('profile_picture').value = avatarUrl; // Set the hidden input value
-    closeAvatarModal(); // Close the modal after selection
-}
 

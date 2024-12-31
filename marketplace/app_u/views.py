@@ -17,6 +17,7 @@ from datetime import datetime, timedelta
 from django.contrib.auth.tokens import default_token_generator
 from .utility import send_email  # Import the utility function
 from django.contrib.auth import get_user_model
+import os
 
 # Create your views here.
 def home(request):
@@ -48,6 +49,7 @@ def generate_otp():
 # Signup view
 def signup(request):
     if request.method == 'POST':
+        print("Request POST Data:", request.POST)
         username = request.POST['username']
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
@@ -88,9 +90,9 @@ def signup(request):
         messages.success(request, 'Please check your email for the OTP.')
         return redirect('verify_otp')  # Redirect to OTP verification
     
-    print(request.POST.get('profile_picture'))
-    return render(request, 'signup.html')
-
+    avatars_path = os.path.join(settings.MEDIA_ROOT, 'avatars')  # Path to the avatar directory
+    avatars = [f'avatars/{f}' for f in os.listdir(avatars_path) if os.path.isfile(os.path.join(avatars_path, f))]
+    return render(request, 'signup.html', {'avatars': avatars})
 
 #otp varification
 def verify_otp(request):

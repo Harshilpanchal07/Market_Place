@@ -1,4 +1,4 @@
-   /* General Reset */
+/* General Reset */
 * {
     margin: 0;
     padding: 0;
@@ -9,7 +9,7 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #121212;
-    overflow: hidden; /* Prevent vertical scroll */
+    overflow: hidden;
     height: 100vh;
 }
 
@@ -25,7 +25,7 @@ body {
     flex: 1;
     height: 100%;
     padding: 20px;
-    z-index: 1; /* Keep it above the gradient */
+    z-index: 1;
 }
 
 .signup-card {
@@ -35,7 +35,8 @@ body {
     box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
     width: 100%;
     max-width: 400px;
-    z-index: 2; /* Keep it above the gradient */
+    z-index: 2;
+    position: relative;
 }
 
 .signup-card h2 {
@@ -43,6 +44,7 @@ body {
     color: #00ff7f;
     font-size: 2rem;
     margin-bottom: 20px;
+    display: inline-block;
 }
 
 .input-group {
@@ -102,6 +104,7 @@ body {
 .btn:hover {
     background-color: #04b96b;
 }
+
 /* Logo Container */
 .logo-container {
     display: flex;
@@ -110,105 +113,168 @@ body {
     flex: 1;
     height: 100%;
     background-color: transparent;
-    z-index: 1; /* Make sure it stays above background */
+    z-index: 1;
 }
 
 .logo {
     max-width: 80%;
     max-height: 80%;
 }
-/* Avatar Modal */
-.avatar-modal {
-    display: none; /* Hidden by default */
-    position: fixed;
-    z-index: 1;
-    left: 0;
-    top: 0;
+
+/* Avatar container */
+.avatar-container {
+    position: absolute;
+    top: 30px;
+    right: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    cursor: pointer;
+    z-index: 3;
+}
+
+.avatar-circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    overflow: hidden;
+    border: 2px solid #ddd;
+}
+
+.avatar-circle img {
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.8);
-    padding-top: 60px;
+    object-fit: cover;
+}
+
+/* Avatar options */
+.avatar-options {
+    position: absolute;
+    top: 70px;  /* Adjust based on your layout */
+    right: 30px;  /* Adjust based on your layout */
+    background: #1e1e1e;
+    padding: 10px;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5);
+    z-index: 3;
+    display: none;  /* Initially hidden */
+    grid-template-columns: repeat(5, 1fr);  /* 5 columns */
+    gap: 10px;
+    max-width: 250px;  /* Limit width to 250px */
+    grid-auto-rows: 40px;  /* Adjust row height based on content */
+    overflow-y: auto;  /* Allows scrolling if there are many icons */
+}
+
+/* Adjust grid columns dynamically based on available space */
+@media (max-width: 1200px) {
+    .avatar-options {
+        grid-template-columns: repeat(4, 1fr);  /* 4 columns for medium screens */
+    }
+}
+
+@media (max-width: 800px) {
+    .avatar-options {
+        grid-template-columns: repeat(3, 1fr);  /* 3 columns for small screens */
+    }
+}
+
+.avatar-options label {
+    color: #d3d3d3;
+    margin-bottom: 10px;
+    grid-column: 1 / -1;  /* Span all columns */
+}
+
+.avatar-choice {
+    display: flex;
     justify-content: center;
     align-items: center;
 }
 
-/* Modal Content */
-.avatar-modal-content {
-    background-color: #1e1e1e;
-    margin: 5% auto;
-    padding: 20px;
-    border-radius: 10px;
-    width: 80%;
-    max-width: 600px;
-    position: relative;
-}
-
-.close-btn {
-    color: #d3d3d3;
-    font-size: 30px;
-    font-weight: bold;
-    position: absolute;
-    right: 20px;
-    top: 10px;
-    cursor: pointer;
-}
-
-.close-btn:hover {
-    color: #00ff7f;
-}
-
-/* Avatar Thumbnails */
-.avatars {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    justify-content: center;
-}
-
-.avatar {
-    width: 80px;
-    height: 80px;
+.avatar-choice img {
+    width: 40px;
+    height: 40px;
     border-radius: 50%;
-    cursor: pointer;
-    transition: transform 0.3s ease;
+    object-fit: cover;
+    border: 2px solid transparent;
+    transition: border-color 0.3s ease;
 }
 
-.avatar:hover {
-    transform: scale(1.1);
+.avatar-choice:hover img {
+    border-color: #4CAF50;
 }
 
-/* Avatar Selection */
-.avatar.selected {
-    border: 3px solid #00ff7f;
+.avatar-choice.selected img {
+    border-color: #4CAF50;
 }
-/* Style for the popup messages */
+
+/* Messages */
 .messages {
-    position: fixed; /* Make it float above the rest of the content */
+    position: fixed;
     top: 20px;
     left: 50%;
-    transform: translateX(-50%); /* Center horizontally */
-    z-index: 1000; /* Ensure it's above other elements */
-    width: 90%; /* Adjust width to fit the screen on small devices */
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: 90%;
     max-width: 400px;
     padding: 15px;
-    border-radius: 20px; /* Increased border-radius for smoother roundness */
+    border-radius: 20px;
     text-align: center;
     font-size: 1rem;
     font-family: Arial, sans-serif;
-    box-shadow: 0 4px 20px rgba(10, 106, 34, 0.7); /* Softer, more pronounced shadow */
+    box-shadow: 0 4px 20px rgba(10, 106, 34, 0.7);
     animation: fade-in 0.5s ease-in-out, fade-out 5s ease-in-out forwards;
 }
 
-/* Message background colors */
 .messages .error {
-    color: #ff4c4c; /* White text for contrast */
+    color: #ff4c4c;
 }
 
 .messages .success {
-    color: #00ff7f; /* Dark text for contrast */
+    color: #00ff7f;
 }
 
-/* Fade-in and fade-out animations */
+/* Background */
+.background {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    overflow: hidden;
+    z-index: -1;
+}
+
+.gradient-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center,
+            rgba(16, 185, 129, 0.1) 0%,
+            rgba(16, 185, 129, 0.05) 20%,
+            rgba(0, 0, 0, 0) 70%);
+    mix-blend-mode: screen;
+    z-index: -1;
+}
+
+.radial-overlay {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at 50% 50%,
+            rgba(16, 185, 129, 0.1),
+            transparent 70%);
+    filter: blur(40px);
+    mix-blend-mode: screen;
+    z-index: -1;
+}
+
+.letters-container {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    align-items: center;
+}
+
+/* Animations */
 @keyframes fade-in {
     from {
         opacity: 0;
@@ -229,60 +295,10 @@ body {
     }
 }
 
-.background {
-    position: absolute; /* Position it behind other content */
-    width: 100%;
-    height: 100%;
-    background-color: #000;
-    overflow: hidden;
-    z-index: -1;  /* Ensure it stays behind other elements */
-}
-
-.gradient-overlay {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at center,
-            rgba(16, 185, 129, 0.1) 0%,
-            rgba(16, 185, 129, 0.05) 20%,
-            rgba(0, 0, 0, 0) 70%);
-    mix-blend-mode: screen;
-    z-index: -1;  /* Keep it behind the content */
-}
-
-.radial-overlay {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 50% 50%,
-            rgba(16, 185, 129, 0.1),
-            transparent 70%);
-    filter: blur(40px);
-    mix-blend-mode: screen;
-    z-index: -1;
-}
-
-.particles {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: -1;
-}
-
-.letters-container {
-    position: absolute;
-    inset: 0;
-    display: flex;
-    gap: 1rem;
-    justify-content: center;
-    align-items: center;
-}
-
 @keyframes glow {
-
-    0%,
-    100% {
+    0%, 100% {
         filter: drop-shadow(0 0 5px rgba(16, 185, 129, 0.7));
     }
-
     50% {
         filter: drop-shadow(0 0 20px rgba(16, 185, 129, 0.9));
     }
@@ -295,23 +311,19 @@ body {
         filter: drop-shadow(0 0 2px #10b981);
         transform: scale(0.8);
     }
-
     20% {
         opacity: 1;
         filter: drop-shadow(0 0 10px #10b981);
     }
-
     45% {
         stroke-dashoffset: 0;
         filter: drop-shadow(0 0 20px #10b981) drop-shadow(0 0 40px #10b981);
         transform: scale(1.1);
     }
-
     85% {
         opacity: 1;
         filter: drop-shadow(0 0 30px #10b981) drop-shadow(0 0 60px #10b981);
     }
-
     100% {
         opacity: 0;
         filter: drop-shadow(0 0 2px #10b981);

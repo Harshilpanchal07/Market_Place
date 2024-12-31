@@ -32,9 +32,26 @@
     <div class="main-container">
         <div class="signup-container">
             <div class="signup-card">
-                <h2>Sign Up</h2>
                 <form action="{% url 'signup' %}" method="POST">
+                <h2>Sign Up</h2>
                     {% csrf_token %}
+                    <!-- Profile Image Section -->
+                    <div class="avatar-container">
+                        <div class="avatar-circle">
+                            <img id="avatar-img" src="/media/avatars/dog.png" alt="Profile Avatar">
+                        </div>
+                        <input type="hidden" name="profile_picture" id="profile-picture" value="avatars/avatar1.png">
+                    </div>
+
+                    <!-- Avatar Change Options -->
+                    <div id="avatar-options" class="avatar-options">
+                        <label>Select Avatar:</label>
+                        {% for avatar in avatars %}
+                            <div class="avatar-choice" onclick="updateAvatar('{{ avatar }}')">
+                                <img src="/media/{{ avatar }}" alt="Avatar">
+                            </div>
+                        {% endfor %}
+                    </div>
                     <div class="input-group">
                         <label for="username">Username</label>
                         <input type="text" id="username" name="username" required placeholder="Enter your username" autocomplete="off">
@@ -50,26 +67,6 @@
                     <div class="input-group">
                         <label for="confirm_password">Confirm Password</label>
                         <input type="password" id="confirm_password" name="confirm_password" required placeholder="Confirm your password">
-                    </div>
-                    <div class="input-group">
-                        <label for="profile_picture">Profile Picture</label>
-                        <input type="hidden" id="profile_picture" name="profile_picture">
-                    </div>
-                    <!-- Avatar Selection Modal -->
-                    <div id="avatarModal" class="avatar-modal">
-                        <div class="avatar-modal-content">
-                            <span class="close-btn" onclick="closeAvatarModal()">×</span>
-                            <div class="avatars">
-                                <img src="https://api.dicebear.com/9.x/bottts/svg?seed=Sara&backgroundColor[]" alt="Avatar 1" class="avatar" onclick="selectAvatar('https://api.dicebear.com/9.x/bottts/svg?seed=Sara&backgroundColor[]')">
-                                <img src="https://api.dicebear.com/9.x/bottts/svg?seed=Easton&backgroundColor[]" alt="Avatar 2" class="avatar" onclick="selectAvatar('https://api.dicebear.com/9.x/bottts/svg?seed=Easton&backgroundColor[]')">
-                                <img src="https://api.dicebear.com/9.x/bottts/svg?seed=Mason&backgroundColor[]" alt="Avatar 3" class="avatar" onclick="selectAvatar('https://api.dicebear.com/9.x/bottts/svg?seed=Mason&backgroundColor[]')">
-                                <img src="https://api.dicebear.com/9.x/bottts/svg?seed=Liliana&backgroundColor[]" alt="Avatar 4" class="avatar" onclick="selectAvatar('https://api.dicebear.com/9.x/bottts/svg?seed=Liliana&backgroundColor[]')">
-                                <img src="https://api.dicebear.com/9.x/bottts/svg?seed=Nolan&backgroundColor[]" alt="Avatar 5" class="avatar" onclick="selectAvatar('https://api.dicebear.com/9.x/bottts/svg?seed=Nolan&backgroundColor[]')">
-                                <img src="https://api.dicebear.com/9.x/bottts/svg?seed=Christian&backgroundColor[]" alt="Avatar 6" class="avatar" onclick="selectAvatar('https://api.dicebear.com/9.x/bottts/svg?seed=Christian&backgroundColor[]')">
-                                <img src="https://api.dicebear.com/9.x/bottts/svg?seed=Aiden&backgroundColor[]" alt="Avatar 7" class="avatar" onclick="selectAvatar('https://api.dicebear.com/9.x/bottts/svg?seed=Aiden&backgroundColor[]')">
-                                <!-- You can add more avatars with similar structure -->
-                            </div>                            
-                        </div>
                     </div>
                     <button type="submit" class="btn">Sign Up</button>
                 </form>
