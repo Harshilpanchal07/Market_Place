@@ -17,6 +17,7 @@ from datetime import datetime, timedelta
 from django.contrib.auth.tokens import default_token_generator
 from .utility import send_email  # Import the utility function
 from django.contrib.auth import get_user_model
+from django.core.files import File
 import os
 
 # Create your views here.
@@ -42,64 +43,21 @@ def login_user(request):
 
     return render(request, 'login.html')
 
-# Generate OTP
+# Utility function to generate OTP
 def generate_otp():
     return get_random_string(length=6, allowed_chars='0123456789')
 
-# Signup view
-def signup(request):
-    if request.method == 'POST':
-        print("Request POST Data:", request.POST)
-        username = request.POST['username']
-        password = request.POST['password']
-        confirm_password = request.POST['confirm_password']
-        email = request.POST['email']
-        profile_picture = request.POST['profile_picture']  # Get the profile picture URL
-        
-        # Check if passwords match
-        if password != confirm_password:
-            messages.error(request, 'Passwords do not match')
-            return redirect('signup')
+# Utility function to send email
+def send_email(subject, template, context, recipient_list):
+    message = f"Your OTP is: {context['otp_code']}"
+    send_mail(subject, message, settings.EMAIL_HOST_USER, recipient_list)
 
-        if User.objects.filter(username=username).exists():
-            messages.error(request, 'Username already exists')
-            return redirect('signup')
-        if User.objects.filter(email=email).exists():
-            messages.error(request, 'Email already registered')
-            return redirect('signup')
-        
-        # Generate OTP
-        otp = generate_otp()
-
-        # Temporarily store user data in session
-        request.session['temp_user'] = {
-            'username': username,
-            'password': password,
-            'email': email,
-            'profile_picture': profile_picture,
-            'action': 'signup',
-            'otp': otp,
-            'otp_created_at': time.time()
-        }
-
-        # Send OTP to user's email using the utility function
-        email_subject = 'Verify your email address'
-        email_body = {'otp_code': otp}  # Context for the email template
-        send_email(email_subject, 'otp_email.html', email_body, [email])
-
-        messages.success(request, 'Please check your email for the OTP.')
-        return redirect('verify_otp')  # Redirect to OTP verification
-    
-    avatars_path = os.path.join(settings.MEDIA_ROOT, 'avatars')  # Path to the avatar directory
-    avatars = [f'avatars/{f}' for f in os.listdir(avatars_path) if os.path.isfile(os.path.join(avatars_path, f))]
-    return render(request, 'signup.html', {'avatars': avatars})
-
-#otp varification
+# OTP Verification View
 def verify_otp(request):
     temp_user = request.session.get('temp_user')
     if not temp_user:
         messages.error(request, 'Session expired or invalid data. Please try again.')
-        return redirect('signup' if temp_user.get('action') == 'signup' else 'forgot_password')
+        return redirect('signup')
 
     otp_created_at = temp_user.get('otp_created_at')
     time_elapsed = time.time() - otp_created_at
@@ -108,53 +66,88 @@ def verify_otp(request):
     if remaining_seconds <= 0:
         messages.error(request, 'Your OTP has expired. Please request a new one.')
         del request.session['temp_user']
-        return redirect('signup' if temp_user.get('action') == 'signup' else 'forgot_password')
-
-    minutes = remaining_seconds // 60
-    seconds = remaining_seconds % 60
+        return redirect('signup')
 
     if request.method == 'POST':
         otp = request.POST.get('otp', '')
         stored_otp = temp_user.get('otp')
 
-        if otp == stored_otp and remaining_seconds > 0:
-            action = temp_user.get('action')
-            if action == 'signup':
-                # Handle Signup OTP
-                hashed_password = make_password(temp_user['password'])
-                user = User(
-                    username=temp_user['username'],
-                    email=temp_user['email'],
-                    password=hashed_password,
-                    is_active=True,
-                )
-                user.save()
+        if otp == stored_otp:
+            # Create and save the user upon successful OTP verification
+            hashed_password = make_password(temp_user['password'])
+            user = User(username=temp_user['username'], email=temp_user['email'], password=hashed_password, is_active=True)
 
-                del request.session['temp_user']
-                messages.success(request, 'Email verified successfully! You can now log in.')
-                return redirect('login')
+            # Handle profile picture if uploaded
+            profile_picture_name = temp_user.get('profile_picture')
+            if profile_picture_name:
+                temp_profile_picture_path = os.path.join(settings.MEDIA_ROOT, 'temp', profile_picture_name)
+                if os.path.exists(temp_profile_picture_path):
+                    user.profile_picture.save(profile_picture_name, File(open(temp_profile_picture_path, 'rb')))
+                    os.remove(temp_profile_picture_path)  # Clean up temporary file
 
-            elif action == 'forgot_password':
-                # Redirect to Reset Password Page for Forgot Password OTP
-                user_email = temp_user.get('email')
-                try:
-                    user = User.objects.get(email=user_email)
-                    token = default_token_generator.make_token(user)
-                    del request.session['temp_user']
-                    return redirect(f'/reset-password/{user.id}/{token}/')  # Redirect to reset password page
-                except User.DoesNotExist:
-                    messages.error(request, "User not found.")
-                    return redirect('forgot_password')
+            user.save()
+            del request.session['temp_user']
+            messages.success(request, 'Email verified successfully! You can now log in.')
+            return redirect('login')
 
         else:
-            messages.error(request, 'Invalid or expired OTP.')
-            return redirect('verify_otp')
+            messages.error(request, 'Invalid OTP. Please try again.')
 
-    return render(request, 'otp.html', {
-        'email': temp_user['email'],
-        'remaining_minutes': minutes,
-        'remaining_seconds': seconds,
-    })
+    minutes, seconds = divmod(remaining_seconds, 60)
+    return render(request, 'otp.html', {'email': temp_user['email'], 'remaining_minutes': minutes, 'remaining_seconds': seconds})
+
+
+# Signup View
+def signup(request):
+    if request.method == 'POST':
+        username = request.POST['username']
+        password = request.POST['password']
+        confirm_password = request.POST['confirm_password']
+        email = request.POST['email']
+        profile_picture = request.FILES.get('profile_picture')
+
+        if password != confirm_password:
+            messages.error(request, 'Passwords do not match.')
+            return redirect('signup')
+
+        if User.objects.filter(username=username).exists():
+            messages.error(request, 'Username already exists.')
+            return redirect('signup')
+
+        if User.objects.filter(email=email).exists():
+            messages.error(request, 'Email already registered.')
+            return redirect('signup')
+
+        # Generate OTP and store temporary user data in session
+        otp = generate_otp()
+        temp_profile_picture_name = None
+
+        if profile_picture:
+            temp_dir = os.path.join(settings.MEDIA_ROOT, 'temp')
+            os.makedirs(temp_dir, exist_ok=True)
+            temp_profile_picture_name = profile_picture.name
+            with open(os.path.join(temp_dir, temp_profile_picture_name), 'wb') as temp_file:
+                for chunk in profile_picture.chunks():
+                    temp_file.write(chunk)
+
+        request.session['temp_user'] = {
+            'username': username,
+            'email': email,
+            'password': password,
+            'otp': otp,
+            'otp_created_at': time.time(),
+            'profile_picture': temp_profile_picture_name,
+        }
+
+        # Send OTP to user's email
+        send_email('Verify your email address', 'otp_email.html', {'otp_code': otp}, [email])
+        messages.success(request, 'Please check your email for the OTP.')
+        return redirect('verify_otp')
+
+    avatars_path = os.path.join(settings.MEDIA_ROOT, 'avatars')
+    avatars = [f'avatars/{f}' for f in os.listdir(avatars_path) if os.path.isfile(os.path.join(avatars_path, f))]
+    return render(request, 'signup.html', {'avatars': avatars})
+
 
 
 # Logout view

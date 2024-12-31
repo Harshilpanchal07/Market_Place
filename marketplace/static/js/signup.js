@@ -5,6 +5,23 @@ document.addEventListener('DOMContentLoaded', function() {
     const profilePictureInput = document.getElementById('profile-picture');
     const avatarChoices = document.querySelectorAll('.avatar-choice');
 
+    // Function to trigger the file input when clicking on the avatar container
+    function triggerFileInput() {
+        profilePictureInput.click(); // Simulate clicking the file input
+    }
+
+    // Function to update the avatar when a file is selected
+    function updateAvatarFromFile(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                avatarImg.src = e.target.result; // Update the profile image preview
+            };
+            reader.readAsDataURL(file); // Read the file as a DataURL (image)
+        }
+    }
+
     // Function to randomly select an avatar
     function selectRandomAvatar() {
         const randomIndex = Math.floor(Math.random() * avatarChoices.length);
@@ -12,14 +29,18 @@ document.addEventListener('DOMContentLoaded', function() {
         updateAvatar(randomAvatar.src);
     }
 
-    // Function to update the selected avatar
+    // Function to update the selected avatar and set it in the file input
     function updateAvatar(avatarSrc) {
         avatarImg.src = avatarSrc;
-        profilePictureInput.value = avatarSrc.split('/').pop();  // Ensure this value is set
-        console.log('Profile Picture Value:', profilePictureInput.value);  // Check this in the console
+
+        // Update the file input field with the selected avatar
+        const avatarFile = new File([new Blob()], avatarSrc.split('/').pop(), { type: 'image/png' });
+        const dataTransfer = new DataTransfer();
+        dataTransfer.items.add(avatarFile);
+        profilePictureInput.files = dataTransfer.files; // Set the selected file to the file input
         hideAvatarOptions();
     }
-    
+
     // Function to show avatar options
     function showAvatarOptions() {
         avatarOptions.style.display = 'flex';

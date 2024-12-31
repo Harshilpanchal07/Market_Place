@@ -1,5 +1,5 @@
 import random
-from django.db.models.signals import post_save
+from django.db.models.signals import pre_save
 from django.dispatch import receiver
 from .models import User
 
@@ -11,8 +11,8 @@ def generate_unique_uid():
         if not User.objects.filter(uid=uid).exists():
             return uid
 
-@receiver(post_save, sender=User)
-def create_uid(sender, instance, created, **kwargs):
-    if created and not instance.uid:
+@receiver(pre_save, sender=User)
+def assign_uid(sender, instance, **kwargs):
+    # Generate UID if not already set
+    if not instance.uid:
         instance.uid = generate_unique_uid()
-        instance.save()

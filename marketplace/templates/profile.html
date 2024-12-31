@@ -24,16 +24,21 @@
     <div class="profile-content">
         <div class="sidebar">
             <div class="profile-header">
-                <div class="profile-info">
+                <!-- Profile Picture -->
+                <div class="profile-picture">
                     <img src="{{ user.profile_picture }}" alt="{{ user.username }}">
+                </div>
+                <!-- Profile Details -->
+                <div class="profile-details">
                     <h2>{{ user.username }}</h2>
                     <p>{{ user.email }}</p>
-                    <p>
+                    <p id="uid">
                         {{ user.uid }}
-                        <button class="copy-btn" onclick="copyToClipboard('{{ user.uid }}')">
+                        <button class="copy-btn" data-uid="{{ user.uid }}">
                             <i class="bx bx-copy"></i> <!-- Copy icon -->
                         </button>
                     </p>
+                    <span class="copy-feedback">Copied!</span> <!-- Feedback message -->
                 </div>
             </div>
             <nav class="profile-nav">

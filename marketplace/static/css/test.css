@@ -59,21 +59,92 @@ body {
     height: 100%; /* Ensure the sidebar stretches to fill the height */
 }
 
-/* Profile header */
+/* Profile header container */
 .profile-header {
-    text-align: start;
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column; /* Stack elements vertically */
+    align-items: flex-start; /* Align all elements to the left */
+    gap: 1rem; /* Space between elements */
 }
 
-.profile-info h2 {
+/* Profile picture styling */
+.profile-picture img {
+    width: 100px; /* Adjusted size */
+    height: 100px; /* Adjusted size */
+    border-radius: 50%; /* Circular shape */
+    border: 3px solid var(--primary-color); /* Border with primary color */
+    box-shadow: var(--shadow-light); /* Subtle shadow */
+    display: flex;
+    object-fit: cover; /* Ensures image fills the area without distortion */
+}
+
+/* Profile details styling */
+.profile-details h2 {
     margin: 0;
     color: var(--text-color);
     font-size: 1.8rem;
 }
 
-.profile-info p {
-    margin: 0.5rem 0;
+.profile-details p {
+    margin: 0.3rem 0; /* Slight spacing between paragraphs */
     color: var(--primary-color);
+    display: flex; /* Aligns text and button in one line */
+    align-items: center; /* Vertically aligns the button with text */
+}
+
+/* UID container styling (like a text input) */
+#uid {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: var(--text-color);
+    background: linear-gradient(145deg, #1e1e1e, #2a2a2a);  /* Subtle gradient like the input field */
+    padding: 0.5rem 1.5rem;  /* Adjusted padding for better input feel */
+    border: 1px solid #444;  /* Border matching input style */
+    border-radius: 10px;  /* Matching rounded corners */
+    display: flex;  /* Flexbox for layout */
+    align-items: center;  /* Vertically center text and button */
+    justify-content: space-between;  /* Align text to the left, button to the right */
+    width: 100%;  /* Ensures full width */
+    box-shadow: inset 2px 2px 5px rgba(0, 0, 0, 0.5), inset -2px -2px 5px rgba(255, 255, 255, 0.1);  /* Inner shadow effect */
+}
+
+/* Adjust the copy button styling */
+.copy-btn {
+    border-radius: 10px;  /* Matching border radius */
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 15%;  /* Button takes 20% of the container's width */
+    text-align: center;  /* Center the text inside the button */
+    font-size: 1rem;
+    border-left: 2px solid #444;  /* Border on the left for separation */
+    background-color: var(--primary-color);  /* Button background */
+    color: white;  /* Text color */
+}
+
+.profile-details p .copy-btn:hover {
+    background-color: var(--hover-color);  /* Button hover effect */
+    transform: scale(1.05);  /* Slight hover effect */
+}
+
+/* Icon inside the copy button */
+.profile-details p .copy-btn i {
+    font-size: 1.2rem;
+}
+.copy-feedback {
+    display: none; /* Initially hidden */
+    margin-left: 10px;
+    color: green;
+    font-weight: bold;
+    font-size: 14px;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.copy-feedback.show {
+    display: inline-block;
+    opacity: 1;
 }
 
 /* Navigation styling */
@@ -144,6 +215,7 @@ body {
     background-color: darkred;
     transform: translateX(4px); /* Adds slight hover effect */
 }
+
 /* Main content styling */
 .main-content {
     flex-grow: 1;

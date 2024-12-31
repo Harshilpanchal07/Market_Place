@@ -7,7 +7,7 @@ document.addEventListener("DOMContentLoaded", () => {
 function initializeProfile() {
     setupMainTabs();
     setupNestedTabs();
-    copyToClipboard();
+    setupCopyToClipboard();
 }
 
 // Main Tabs Switching
@@ -56,6 +56,56 @@ function setupNestedTabs() {
             }
         });
     });
+}
+
+// Handle Copy to Clipboard
+function setupCopyToClipboard() {
+    const copyButtons = document.querySelectorAll('.copy-btn');
+
+    copyButtons.forEach(button => {
+        button.addEventListener('click', () => {
+            const uidText = button.getAttribute('data-uid');
+            copyToClipboard(uidText);
+        });
+    });
+}
+
+function copyToClipboard(uidText) {
+    if (navigator.clipboard) {
+        // Use Clipboard API (more modern and reliable)
+        navigator.clipboard.writeText(uidText)
+            .then(() => {
+                // Show feedback message
+                const feedback = document.querySelector('.copy-feedback');
+                feedback.classList.add('show');
+                
+                // Hide feedback message after 2 seconds
+                setTimeout(() => {
+                    feedback.classList.remove('show');
+                }, 2000);
+            })
+            .catch(err => {
+                // Handle the error if copying fails
+                console.error('Failed to copy text: ', err);
+            });
+    } else {
+        // Fallback to older method if Clipboard API is not supported
+        const tempInput = document.createElement('input');
+        document.body.appendChild(tempInput);
+        tempInput.value = uidText;
+        tempInput.select();
+        document.execCommand('copy');
+        document.body.removeChild(tempInput);
+
+        // Show feedback message
+        const feedback = document.querySelector('.copy-feedback');
+        feedback.classList.add('show');
+        
+        // Hide feedback message after 2 seconds
+        setTimeout(() => {
+            feedback.classList.remove('show');
+        }, 2000);
+    }
 }
 
 
