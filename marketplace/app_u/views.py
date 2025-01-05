@@ -73,18 +73,14 @@ def verify_otp(request):
         stored_otp = temp_user.get('otp')
 
         if otp == stored_otp:
-            # Create and save the user upon successful OTP verification
             hashed_password = make_password(temp_user['password'])
-            user = User(username=temp_user['username'], email=temp_user['email'], password=hashed_password, is_active=True)
-
-            # Handle profile picture if uploaded
-            profile_picture_name = temp_user.get('profile_picture')
-            if profile_picture_name:
-                temp_profile_picture_path = os.path.join(settings.MEDIA_ROOT, 'temp', profile_picture_name)
-                if os.path.exists(temp_profile_picture_path):
-                    user.profile_picture.save(profile_picture_name, File(open(temp_profile_picture_path, 'rb')))
-                    os.remove(temp_profile_picture_path)  # Clean up temporary file
-
+            user = User(
+                username=temp_user['username'],
+                email=temp_user['email'],
+                password=hashed_password,
+                is_active=True,
+                profile_picture=temp_user.get('profile_picture')  # Save only the file path
+            )
             user.save()
             del request.session['temp_user']
             messages.success(request, 'Email verified successfully! You can now log in.')
@@ -104,7 +100,7 @@ def signup(request):
         password = request.POST['password']
         confirm_password = request.POST['confirm_password']
         email = request.POST['email']
-        profile_picture = request.FILES.get('profile_picture')
+        selected_avatar = request.POST.get('selected_avatar')  # Avatar path
 
         if password != confirm_password:
             messages.error(request, 'Passwords do not match.')
@@ -120,25 +116,14 @@ def signup(request):
 
         # Generate OTP and store temporary user data in session
         otp = generate_otp()
-        temp_profile_picture_name = None
-
-        if profile_picture:
-            temp_dir = os.path.join(settings.MEDIA_ROOT, 'temp')
-            os.makedirs(temp_dir, exist_ok=True)
-            temp_profile_picture_name = profile_picture.name
-            with open(os.path.join(temp_dir, temp_profile_picture_name), 'wb') as temp_file:
-                for chunk in profile_picture.chunks():
-                    temp_file.write(chunk)
-
         request.session['temp_user'] = {
             'username': username,
             'email': email,
             'password': password,
             'otp': otp,
             'otp_created_at': time.time(),
-            'profile_picture': temp_profile_picture_name,
+            'profile_picture': selected_avatar,  # Save only the avatar's path
         }
-
         # Send OTP to user's email
         send_email('Verify your email address', 'otp_email.html', {'otp_code': otp}, [email])
         messages.success(request, 'Please check your email for the OTP.')
@@ -147,7 +132,6 @@ def signup(request):
     avatars_path = os.path.join(settings.MEDIA_ROOT, 'avatars')
     avatars = [f'avatars/{f}' for f in os.listdir(avatars_path) if os.path.isfile(os.path.join(avatars_path, f))]
     return render(request, 'signup.html', {'avatars': avatars})
-
 
 
 # Logout view
@@ -240,7 +224,7 @@ def reset_password(request, uid, token):
                 # Update user password
                 user.set_password(new_password)
                 user.save()
-                messages.success(request, "Your password has been reset successfully.")
+                messages.success(request, "Your password has been reset successfully. Pleae log in agian.")
                 return redirect('login')
 
             return render(request, 'reset_pass.html', {'uid': uid, 'token': token})

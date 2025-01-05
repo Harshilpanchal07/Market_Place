@@ -36,7 +36,7 @@ class User(AbstractBaseUser):
     username = models.CharField(max_length=255, unique=True, primary_key=True)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=128)  # Password will be hashed
-    profile_picture = models.ImageField(upload_to='profile_picture/', null=True, blank=True)  # Added profile picture field
+    profile_picture = models.CharField(max_length=255)  # Store the image path here
 
     # Unique user ID
     uid = models.CharField(max_length=12, unique=True, editable=False) # 12-digit unique ID

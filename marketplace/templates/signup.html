@@ -35,22 +35,14 @@
                 <form action="{% url 'signup' %}" method="POST" enctype="multipart/form-data">
                     <h2>Sign Up</h2>
                     {% csrf_token %}
-                    <!-- Profile Image Section -->
-                    <div class="avatar-container">
-                        <div class="avatar-circle">
-                            <img id="avatar-img" src="/media/avatars/cat.png" alt="Profile Avatar">
-                        </div>
-                        <!-- Hidden file input to hold selected avatar file -->
-                        <input type="file" name="profile_picture" id="profile-picture" style="display: none;" accept="image/*">
-                    </div>
-        
                     <!-- Avatar Change Options -->
                     <div id="avatar-options" class="avatar-options">
                         <label>Select Avatar:</label>
                         {% for avatar in avatars %}
-                            <div class="avatar-choice" onclick="updateAvatar('{{ avatar }}')">
-                                <img src="/media/{{ avatar }}" alt="Avatar">
-                            </div>
+                            <input type="radio" name="selected_avatar" value="{{ avatar }}" id="{{ avatar }}" class="avatar-choice">
+                            <label for="{{ avatar }}">
+                                <img src="/media/{{ avatar }}" alt="Avatar" style="width:50px;height:50px;">
+                            </label>
                         {% endfor %}
                     </div>
                     <div class="input-group">

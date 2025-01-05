@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const avatarContainer = document.querySelector('.avatar-container');
     const avatarOptions = document.getElementById('avatar-options');
     const profilePictureInput = document.getElementById('profile-picture');
-    const avatarChoices = document.querySelectorAll('.avatar-choice');
+    const avatarChoices = document.querySelectorAll('.avatar-choice');  // Corrected selector
 
     // Function to trigger the file input when clicking on the avatar container
     function triggerFileInput() {
@@ -24,20 +24,23 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Function to randomly select an avatar
     function selectRandomAvatar() {
-        const randomIndex = Math.floor(Math.random() * avatarChoices.length);
-        const randomAvatar = avatarChoices[randomIndex].querySelector('img');
-        updateAvatar(randomAvatar.src);
+        if (avatarChoices.length > 0) {
+            const randomIndex = Math.floor(Math.random() * avatarChoices.length);
+            const randomAvatar = avatarChoices[randomIndex].querySelector('img');
+            updateAvatar(randomAvatar.src);
+        }
     }
 
     // Function to update the selected avatar and set it in the file input
     function updateAvatar(avatarSrc) {
         avatarImg.src = avatarSrc;
 
-        // Update the file input field with the selected avatar
-        const avatarFile = new File([new Blob()], avatarSrc.split('/').pop(), { type: 'image/png' });
-        const dataTransfer = new DataTransfer();
-        dataTransfer.items.add(avatarFile);
-        profilePictureInput.files = dataTransfer.files; // Set the selected file to the file input
+        // Here we just store the path (relative URL) of the selected avatar, no need to create a File object
+        const avatarPath = avatarSrc.split('/').slice(3).join('/'); // Correctly extract path
+
+        // Update the hidden file input field with the selected avatar's path
+        profilePictureInput.value = avatarPath;
+
         hideAvatarOptions();
     }
 
@@ -79,4 +82,5 @@ document.addEventListener('DOMContentLoaded', function() {
     // Randomly select an avatar on page load
     selectRandomAvatar();
 });
+
 
