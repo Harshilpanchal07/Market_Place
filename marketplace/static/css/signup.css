@@ -120,6 +120,8 @@ body {
     max-width: 80%;
     max-height: 80%;
 }
+
+
 /* Messages */
 .messages {
     position: fixed;
