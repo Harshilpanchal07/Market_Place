@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 
 from pathlib import Path
 import os
+import app_u.sensitive
+
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -132,11 +134,25 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 #Authenticat_model
 AUTH_USER_MODEL = 'app_u.User'  # Replace 'your_app_name' with the app name where your User model is defined.
 
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_USE_TLS = True
-EMAIL_HOST_USER = '230101030015@gandhinagaruni.ac.in'
-EMAIL_HOST_PASSWORD = 'tike ijhk utjq uryr'
-DEFAULT_FROM_EMAIL = '230101030015@gandhinagaruni.ac.in'  # Verified email address
+try:
+    from app_u.sensitive import (
+        EMAIL_BACKEND,
+        EMAIL_HOST,
+        EMAIL_PORT,
+        EMAIL_USE_TLS,
+        EMAIL_HOST_USER,
+        EMAIL_HOST_PASSWORD,
+        DEFAULT_FROM_EMAIL,
+    )
+except ImportError:
+    # Log a warning if sensitive.py is missing (useful for production environments)
+    import warnings
+    warnings.warn("sensitive.py not found. Email configuration is missing.")
+    EMAIL_BACKEND = None
+    EMAIL_HOST = None
+    EMAIL_PORT = None
+    EMAIL_USE_TLS = None
+    EMAIL_HOST_USER = None
+    EMAIL_HOST_PASSWORD = None
+    DEFAULT_FROM_EMAIL = None
 

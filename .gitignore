@@ -18,3 +18,8 @@ media/
 # System-specific files
 .DS_Store
 Thumbs.db
+
+#Sensitive data
+sensitive.py
+.env
+
