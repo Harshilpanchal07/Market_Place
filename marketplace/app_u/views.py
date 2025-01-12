@@ -19,6 +19,8 @@ from .utility import send_email  # Import the utility function
 from django.contrib.auth import get_user_model
 from django.core.files import File
 import os
+from random import randint
+from django.utils.timezone import now, timedelta
 
 # Create your views here.
 def home(request):
@@ -179,31 +181,88 @@ def change_password(request):
 
     return render(request, 'check_pass.html')
 
-# Forgot Password view
+@login_required
 def forgot_password(request):
-    if request.method == 'POST':
-        email = request.POST.get('email')
+    if not request.user.is_authenticated:
+        return redirect('login')  # Redirect to login if user is not authenticated
+
+    user = request.user  # The logged-in user requesting the password reset
+
+    # Step 1: Generate and send OTP on initial GET request
+    if request.method == 'GET':
+        generated_otp = randint(100000, 999999)  # Generate random OTP
+        request.session['otp_data'] = {
+            'otp': generated_otp,
+            'email': user.email,
+            'otp_created_at': now().isoformat()
+        }
+
+        # Send OTP email
         try:
-            user = User.objects.get(email=email)
-            token = default_token_generator.make_token(user)
-            reset_link = request.build_absolute_uri(f"/reset-password/{user.uid}/{token}/")
-
-            # Send password reset email
             send_mail(
-                'Password Reset',
-                f'Click the following link to reset your password: {reset_link}',
-                'no-reply@example.com',
-                [email],
+                'Password Reset OTP',
+                f'Your OTP for password reset is: {generated_otp}',
+                'no-reply@example.com',  # Replace with your email
+                [user.email],
             )
-
-            messages.success(request, "Password reset link sent to your email.")
-            return redirect('login')
-
-        except User.DoesNotExist:
-            messages.error(request, "No user found with this email address.")
+            messages.success(request, "An OTP has been sent to your email. Please enter it below.")
+        except Exception as e:
+            messages.error(request, f"Error sending OTP email: {e}")
             return redirect('forgot_password')
 
-    return render(request, 'forgot_pass.html')
+    # Step 2: Handle POST requests for OTP verification or resending
+    if request.method == 'POST':
+        otp = request.POST.get('otp', '').strip()
+        otp_data = request.session.get('otp_data', {})
+
+        # OTP Verification
+        if otp:
+            if not otp_data or otp_data.get('email') != user.email:
+                messages.error(request, "Invalid session or email. Please try again.")
+                return redirect('forgot_password')
+
+            otp_created_at = now().fromisoformat(otp_data['otp_created_at'])
+            time_elapsed = now() - otp_created_at
+
+            if time_elapsed > timedelta(minutes=5):  # OTP valid for 5 minutes
+                messages.error(request, "Your OTP has expired. Please request a new one.")
+                del request.session['otp_data']
+                return redirect('forgot_password')
+
+            if str(otp) == str(otp_data['otp']):  # Correct OTP
+                token = default_token_generator.make_token(user)
+                uid = user.uid
+                reset_password_url = reverse('reset_password', kwargs={'uid': uid, 'token': token})
+                return redirect(reset_password_url)
+            else:
+                messages.error(request, "Invalid OTP. Please try again.")
+                return redirect('forgot_password')
+
+        # Resend OTP
+        if 'resend' in request.POST:
+            generated_otp = randint(100000, 999999)
+            request.session['otp_data'] = {
+                'otp': generated_otp,
+                'email': user.email,
+                'otp_created_at': now().isoformat()
+            }
+
+            try:
+                send_mail(
+                    'Password Reset OTP',
+                    f'Your new OTP for password reset is: {generated_otp}',
+                    'no-reply@example.com',
+                    [user.email],
+                )
+                messages.success(request, "A new OTP has been sent to your email.")
+            except Exception as e:
+                messages.error(request, f"Error sending OTP email: {e}")
+
+            return redirect('forgot_password')
+
+    return render(request, 'forgot_pass.html', {'email': user.email})
+
+
 
 # Reset Password view
 def reset_password(request, uid, token):
