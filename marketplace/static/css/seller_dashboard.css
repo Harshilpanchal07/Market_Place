@@ -1,3 +1,4 @@
+
 /* Reset and Base Styles */
 * {
     margin: 0;
@@ -8,20 +9,22 @@
 
 :root {
     --primary: #22c522;
-    --primary-light: #008000;
+    --primary-light: #2edc2e;
     --accent-color: #197419;
     --background-color: #000000;
     --dark: #121212;
     --dark-2: #1a1a1a;
     --light: #f3f4f6;
     --white: #ffffff;
-    --shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
-    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
 }
 
 body {
     background-color: var(--light);
     color: var(--dark);
+    line-height: 1.6;
 }
 
 /* Layout */
@@ -36,7 +39,7 @@ body {
     background-color: var(--background-color);
     color: var(--white);
     padding: 1.5rem;
-    transition: all 0.3s ease;
+    transition: var(--transition);
 }
 
 .logo {
@@ -64,16 +67,17 @@ body {
     background: transparent;
     color: var(--light);
     cursor: pointer;
-    transition: all 0.3s ease;
+    transition: var(--transition);
 }
 
 .nav-item i {
     font-size: 1.25rem;
 }
 
-.nav-item:hover {
+.nav-item:hover, .nav-item:focus {
     background-color: rgba(255, 255, 255, 0.1);
     transform: translateX(4px);
+    outline: none;
 }
 
 .nav-item.active {
@@ -87,6 +91,7 @@ body {
     flex: 1;
     padding: 2rem;
     background-color: var(--dark);
+    overflow-y: auto;
 }
 
 header {
@@ -116,7 +121,7 @@ header h1 {
     display: flex;
     justify-content: space-between;
     align-items: flex-start;
-    transition: all 0.3s ease;
+    transition: var(--transition);
 }
 
 .stat-card:hover {
@@ -154,13 +159,6 @@ header h1 {
     animation: fadeIn 0.5s ease-out;
 }
 
-.content-card p{
-    color: var(--primary);
-    font-size: 2rem;
-    font-weight: 500;
-    margin-bottom: 0.5rem;
-}
-
 .tab-content.active {
     display: block;
 }
@@ -171,146 +169,110 @@ header h1 {
     border-radius: 0.75rem;
     box-shadow: var(--shadow);
 }
-.content-card h2{
+
+.content-card h2, .content-card p {
     color: var(--primary);
     font-size: 2rem;
     font-weight: 500;
     margin-bottom: 0.5rem;
 }
 
-.content-card h3{
+.content-card h3 {
     color: var(--primary);
     font-size: 1rem;
     font-weight: 100;
 }
 
-/* General Styling */
+/* Profile Styles */
 .profile-container {
-    background-color: var(--dark);
-    padding: 2rem;
-    border-radius: 1rem;
-    box-shadow: var(--shadow);
-    color: var(--white);
-    max-width: 1000px;
-    margin: 2rem auto;
-    transition: all 0.3s ease;
-}
-
-.profile-container:hover {
-    transform: translateY(-4px);
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+    background-color: var(--dark-2);
+    border-radius: 10px;
     box-shadow: var(--shadow-lg);
 }
 
-/* Profile Header */
 .profile-header {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    margin-bottom: 2rem;
+    gap: 20px;
+    border-bottom: 1px solid var(--accent-color);
+    padding-bottom: 20px;
 }
 
-.header-left h2 {
+.profile-photo img {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 3px solid var(--primary);
+}
+
+.profile-info {
+    flex: 1;
+    color: var(--light);
+}
+
+.profile-info h2 {
+    font-size: 1.8em;
+    margin-bottom: 10px;
     color: var(--primary);
-    font-size: 2rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
 }
 
-.header-left p {
-    color: var(--white);
-    font-size: 1rem;
-    font-weight: 300;
+.profile-info p {
+    font-size: 1em;
+    margin: 5px 0;
 }
 
-.header-right .upload-btn {
-    background-color: var(--primary);
-    color: var(--white);
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    text-decoration: none;
-    font-weight: bold;
-    transition: background-color 0.3s;
-}
-
-.header-right .upload-btn:hover {
-    background-color: var(--primary-light);
-}
-
-/* Profile Details */
 .profile-details {
-    margin-bottom: 2rem;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
 }
 
 .profile-item {
     display: flex;
     align-items: center;
-    gap: 1rem;
-    background-color: var(--dark-2);
-    padding: 1.25rem;
-    border-radius: 0.75rem;
-    box-shadow: var(--shadow);
-    transition: all 0.3s ease;
-    margin-bottom: 1rem;
-}
-
-.profile-item:hover {
-    transform: translateY(-4px);
-    box-shadow: var(--shadow-lg);
+    gap: 10px;
 }
 
 .profile-item i {
-    font-size: 1.5rem;
+    font-size: 1.5em;
     color: var(--primary);
 }
 
-.profile-item .profile-text h3 {
-    color: var(--primary);
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
+.profile-text h3 {
+    margin: 0;
+    font-size: 1.2em;
+    color: var(--accent-color);
 }
 
-.profile-item .profile-text p {
-    color: var(--white);
-    font-size: 1rem;
-    font-weight: 300;
-    line-height: 1.5;
+.profile-text p {
+    margin: 0;
+    font-size: 1em;
+    color: var(--light);
 }
-
-
 
 /* Your Products Section */
-.tab-content #your_products {
+#your_products {
     margin-top: 2rem;
-    padding: 2rem;
-    background-color: var(--dark-2);
-    border-radius: 0.75rem;
-    box-shadow: var(--shadow-lg);
 }
 
-.content-card h3 {
-    color: var(--primary);
-    font-size: 1.75rem;
-    font-weight: bold;
-    margin-bottom: 1.5rem;
-}
-
-/* Card Container */
 .card-container {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 1.5rem;
     margin-top: 2rem;
-    padding: 1rem;
 }
 
-/* Card Styling */
 .card {
     background-color: var(--dark);
     border-radius: 0.75rem;
     overflow: hidden;
     box-shadow: var(--shadow-lg);
-    transition: transform 0.3s ease;
+    transition: var(--transition);
     display: flex;
     flex-direction: column;
 }
@@ -319,17 +281,18 @@ header h1 {
     transform: translateY(-5px);
 }
 
-/* Card Image */
 .card-img {
     width: 100%;
     height: 200px;
     object-fit: cover;
 }
 
-/* Card Content */
 .card-content {
     padding: 1.25rem;
     color: var(--white);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
 }
 
 .card-title {
@@ -343,14 +306,14 @@ header h1 {
     font-size: 1rem;
     margin-bottom: 1.5rem;
     color: var(--light);
+    flex-grow: 1;
 }
 
 .card-actions {
     display: flex;
     justify-content: flex-end;
     gap: 1rem;
-    margin-top: 1rem; /* Optional: add space from the content above */
-    align-items: center; /* Align vertically in the same row */
+    margin-top: auto;
 }
 
 /* Button Styles */
@@ -360,253 +323,68 @@ header h1 {
     font-size: 1rem;
     text-decoration: none;
     text-align: center;
-    transition: background-color 0.3s, transform 0.3s ease;
+    transition: var(--transition);
+    cursor: pointer;
 }
 
 .btn-success {
-    background-color: var(--dark); /* Green background */
-    color: white; /* White text */
-    padding: 0.75rem 1.5rem; /* Padding for better clickability */
-    border-radius: 0.5rem; /* Rounded corners */
-    font-size: 1.1rem; /* Slightly larger text */
-    font-weight: bold; /* Bold text */
-    text-decoration: none; /* Remove underline */
-    border: 2px solid transparent; /* Initial transparent border */
-    position: relative; /* Needed for positioning */
-    overflow: hidden; /* Ensures the animation stays within the button */
-    display: inline-block; /* Ensure the button acts like a block element */
-    transition: background-color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transitions */
-}
-
-/* Border animation */
-@keyframes border-animation {
-    0% {
-        border-top: 2px solid #28a745;
-        border-right: 2px solid transparent;
-        border-bottom: 2px solid transparent;
-        border-left: 2px solid transparent;
-    }
-    10% {
-        border-top: 2px solid #28a745;
-        border-right: 2px solid #28a745;
-        border-bottom: 2px solid transparent;
-        border-left: 2px solid transparent;
-    }
-    20% {
-        border-top: 2px solid #28a745;
-        border-right: 2px solid #28a745;
-        border-bottom: 2px solid #28a745;
-        border-left: 2px solid transparent;
-    }
-    30% {
-        border-top: 2px solid #28a745;
-        border-right: 2px solid #28a745;
-        border-bottom: 2px solid #28a745;
-        border-left: 2px solid #28a745;
-    }
-    40% {
-        border-top: 2px solid #28a745;
-        border-right: 2px solid #28a745;
-        border-bottom: 2px solid #28a745;
-        border-left: 2px solid #28a745;
-    }
-    50% {
-        border-top: 2px solid #28a745;
-        border-right: 2px solid #28a745;
-        border-bottom: 2px solid #28a745;
-        border-left: 2px solid #28a745;
-    }
-    60% {
-        border-top: 2px solid #28a745;
-        border-right: 2px solid #28a745;
-        border-bottom: 2px solid #28a745;
-        border-left: 2px solid #28a745;
-    }
-    70% {
-        border-top: 2px solid #28a745;
-        border-right: 2px solid #28a745;
-        border-bottom: 2px solid #28a745;
-        border-left: 2px solid #28a745;
-    }
-    80% {
-        border-top: 2px solid #28a745;
-        border-right: 2px solid #28a745;
-        border-bottom: 2px solid #28a745;
-        border-left: 2px solid #28a745;
-    }
-    90% {
-        border-top: 2px solid #28a745;
-        border-right: 2px solid #28a745;
-        border-bottom: 2px solid #28a745;
-        border-left: 2px solid #28a745;
-    }
-    100% {
-        border-top: 2px solid #28a745;
-        border-right: 2px solid #28a745;
-        border-bottom: 2px solid #28a745;
-        border-left: 2px solid #28a745;
-    }
-}
-
-/* Hover effect: Apply border animation */
-.btn-success:hover {
-    animation: border-animation 2s ease-in-out forwards; /* Animate the border */
-    box-shadow: 0 6px 12px rgba(0, 123, 0, 0.2); /* Stronger shadow on hover */
-}
-/* Active effect: Apply even darker green when clicked */
-.btn-success:active {
-    background-color: #1e7e34; /* Even darker green when clicked */
-}
-
-
-.btn-warning {
-    background-color: var(--primary-light);
-    color: var(--white);
-}
-
-.btn-warning:hover {
-    background-color: darken(var(--primary-light), 10%);
-    transform: scale(1.05);
-}
-
-.btn-danger {
-    background-color: var(--primary-light);
-    color: var(--white);
-}
-
-.btn-danger:hover {
-    background-color: darken(var(--primary-light), 10%);
-    transform: scale(1.05);
-}
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .card-container {
-        grid-template-columns: 1fr; /* One column on small screens */
-    }
-
-    .card-title {
-        font-size: 1.1rem;
-    }
-
-    .card-description {
-        font-size: 0.9rem;
-    }
-
-    .btn {
-        font-size: 0.875rem;
-        padding: 0.5rem 1rem;
-    }
-}
-
-
-/* Add Product Button */
-.add-product-btn {
     background-color: var(--primary);
     color: var(--white);
-    padding: 0.75rem 1.5rem;
-    border-radius: 0.5rem;
-    font-weight: bold;
-    text-decoration: none;
-    transition: background-color 0.3s, transform 0.3s ease;
-    margin-bottom: 1.5rem;
+    border: none;
 }
 
-.add-product-btn:hover {
+.btn-success:hover, .btn-success:focus {
     background-color: var(--primary-light);
-    transform: scale(1.05);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(34, 197, 34, 0.2);
 }
 
-/* Responsive Design */
-@media (max-width: 768px) {
-    .content-card h3 {
-        font-size: 1.5rem;
-    }
-
-    table th, table td {
-        padding: 0.75rem;
-        font-size: 0.875rem;
-    }
-
-    .table .btn {
-        padding: 0.5rem 1rem;
-    }
-
-    .add-product-btn {
-        padding: 0.5rem 1rem;
-    }
+.btn-warning, .btn-danger {
+    background-color: var(--primary-light);
+    color: var(--white);
+    border: none;
 }
 
+.btn-warning:hover, .btn-warning:focus,
+.btn-danger:hover, .btn-danger:focus {
+    background-color: var(--primary);
+    transform: translateY(-2px);
+}
 
+/* Messages */
 .messages {
-    position: fixed; /* Make it float above the rest of the content */
+    position: fixed;
     top: 20px;
     left: 50%;
-    transform: translateX(-50%); /* Center horizontally */
-    z-index: 1000; /* Ensure it's above other elements */
-    width: 90%; /* Adjust width to fit the screen on small devices */
+    transform: translateX(-50%);
+    z-index: 1000;
+    width: 90%;
     max-width: 400px;
     padding: 15px;
-    border-radius: 20px; /* Increased border-radius for smoother roundness */
+    border-radius: 20px;
     text-align: center;
     font-size: 1rem;
-    font-family: Arial, sans-serif;
-    box-shadow: 0 4px 20px rgba(10, 106, 34, 0.7); /* Softer, more pronounced shadow */
+    box-shadow: 0 4px 20px rgba(10, 106, 34, 0.7);
     animation: fade-in 0.5s ease-in-out, fade-out 5s ease-in-out forwards;
 }
 
-/* Message background colors */
 .messages .error {
-    color: #ff4c4c; /* White text for contrast */
+    color: #ff4c4c;
 }
 
 .messages .success {
-    color: #00ff7f; /* Dark text for contrast */
+    color: #00ff7f;
 }
-
-/* Responsive Design */
-@media (max-width: 768px) {
-    .profile-container {
-        padding: 1.5rem;
-    }
-
-    .products-grid {
-        grid-template-columns: 1fr;
-    }
-}
-
 
 /* Animations */
 @keyframes fadeIn {
-    from {
-        opacity: 0;
-        transform: translateY(10px);
-    }
-    to {
-        opacity: 1;
-        transform: translateY(0);
-    }
+    from { opacity: 0; transform: translateY(10px); }
+    to { opacity: 1; transform: translateY(0); }
 }
 
 @keyframes fade-out {
-    from {
-        opacity: 1;
-    }
-    to {
-        opacity: 0;
-        visibility: hidden; /* Optional: hides the message completely */
-    }
-}
-
-@keyframes slideIn {
-    from {
-        transform: translateX(-10px);
-        opacity: 0;
-    }
-    to {
-        transform: translateX(0);
-        opacity: 1;
-    }
+    from { opacity: 1; }
+    to { opacity: 0; visibility: hidden; }
 }
 
 /* Responsive Design */
@@ -624,7 +402,24 @@ header h1 {
         padding: 1rem;
     }
 
-    .stat-cards {
+    .stat-cards, .card-container {
         grid-template-columns: 1fr;
+    }
+
+    .card-title {
+        font-size: 1.1rem;
+    }
+
+    .card-description {
+        font-size: 0.9rem;
+    }
+
+    .btn {
+        font-size: 0.875rem;
+        padding: 0.5rem 1rem;
+    }
+
+    .profile-container {
+        padding: 1.5rem;
     }
 }

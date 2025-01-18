@@ -2,135 +2,81 @@
     --primary-color: #22c522;
     --secondary-color: #008000;
     --background-color: #000000;
-    --surface-color: #121212;
+    --surface-color: rgba(18, 18, 18, 0.8); /* Adjusted for transparency */
     --text-color: #ffffff;
     --border-color: #1a1a1a;
     --hover-color: #004000;
     --accent-color: #197419;
 }
 
+
 body {
     margin: 0;
-    padding: 0;
     font-family: Arial, sans-serif;
     background-color: var(--background-color);
     color: var(--text-color);
-    display: flex;
-    justify-content: center;
-    align-items: center;
     height: 100vh;
-}
-
-.center-box {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    gap: 20px;
-    background-color: transparent;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    max-width: 600px;
-    width: 90%;
+    justify-content: center;
+    position: relative; /* Ensure proper positioning for the background */
+    overflow: hidden; /* Prevent scrolling */
 }
 
-.left-side, .right-side {
-    width: 45%;
-}
-
-h1 {
-    font-size: 2.0em;
-    margin-bottom: 70px;
-    color: var(--primary-color);
-}
-
-p {
-    font-size: 1em;
-    margin-bottom: 5px;
-    color: var(--text-color);
-}
-
-a {
-    color: var(--accent-color);
-    text-decoration: none;
-    font-weight: bold;
-}
-
-a:hover {
-    color: var(--primary-color);
-    text-decoration: underline;
-}
 
 form {
+    background-color: transparent; /* Semi-transparent background */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+    width: 100%; /* Adapts to container's width */
+    max-width: 300px; /* Ensures the form remains compact */
+    margin: auto; /* Centers the form */
+    backdrop-filter: blur(10px); /* Adds a blurred background effect */
     display: flex;
     flex-direction: column;
+    align-items: center;
+    gap: 15px; /* Adds spacing between elements */
+    z-index: 3; /* Ensures interactivity */
 }
 
-input[type="password"] {
+form label {
+    align-self: flex-start; /* Align labels to the left */
+    font-size: 14px;
+    color: var(--text-color);
+}
+
+form input {
+    width: 100%; /* Takes full width of the form */
     padding: 10px;
-    font-size: 1em;
     border: 1px solid var(--border-color);
     border-radius: 5px;
-    margin-bottom: 20px;
-    background-color: var(--surface-color);
+    background-color: rgba(0, 0, 0, 0.7); /* Matches theme */
     color: var(--text-color);
-}
-
-input[type="password"]::placeholder {
-    color: var(--text-color);
-    opacity: 0.7;
-}
-
-/* Highlight when the input is focused */
-input[type="password"]:focus {
+    font-size: 14px;
     outline: none;
-    border-color: var(--primary-color);
+    transition: border-color 0.3s ease;
+    z-index: 4; /* Ensures interactivity */
 }
 
-/* Highlight when the input has a value */
-input[type="password"]:not(:placeholder-shown) {
-    border-color: var(--primary-color);
-    color: var(--primary-color);
+form input:focus {
+    border-color: var(--primary-color); /* Highlight on focus */
 }
 
-
-.button-container {
-    margin-top: auto;
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-}
-
-button {
-    padding: 10px 20px;
-    font-size: 1em;
+form button {
+    width: 100%;
+    padding: 10px;
+    background-color: var(--primary-color);
+    color: var(--text-color);
+    font-size: 16px;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease;
 }
 
-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.btn-primary {
-    background-color: var(--secondary-color);
-    color: var(--text-color);
-}
-
-.btn-primary:hover {
-    background-color: var(--primary-color);
-}
-
-.btn-secondary {
-    background-color: var(--secondary-color);
-    color: var(--text-color);
-}
-
-.btn-secondary:hover {
-    background-color: var(--primary-color);
+form button:hover {
+    background-color: var(--hover-color); /* Darker shade on hover */
 }
 
 /* Style for the popup messages */
@@ -181,35 +127,40 @@ button:disabled {
     }
 }
 
-
 .background {
-    position: fixed; /* Position it behind other content */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: #000;
     overflow: hidden;
-    z-index: -1;  /* Ensure it stays behind other elements */
+    z-index: -1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .gradient-overlay {
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at center,
-            rgba(16, 185, 129, 0.1) 0%,
-            rgba(16, 185, 129, 0.05) 20%,
-            rgba(0, 0, 0, 0) 70%);
-            mix-blend-mode: screen;
-    z-index: -1;  /* Keep it behind the content */
+    background: radial-gradient(
+        circle at center,
+        rgba(16, 185, 129, 0.1) 0%,
+        rgba(16, 185, 129, 0.05) 20%,
+        rgba(0, 0, 0, 0) 70%
+    );
+    mix-blend-mode: screen;
+    z-index: -1;
 }
 
 .radial-overlay {
     position: absolute;
     inset: 0;
-    background: radial-gradient(circle at 50% 50%,
-    rgba(16, 185, 129, 0.1),
-    transparent 70%);
+    background: radial-gradient(
+        circle at 50% 50%,
+        rgba(16, 185, 129, 0.1),
+        transparent 70%
+    );
     filter: blur(40px);
     mix-blend-mode: screen;
     z-index: -1;
@@ -227,10 +178,6 @@ button:disabled {
     100% {
         background-position: 0% 50%;
     }
-
 }
-
-
-
 
 

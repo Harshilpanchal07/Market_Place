@@ -2,7 +2,7 @@
     --primary-color: #22c522;
     --secondary-color: #008000;
     --background-color: #000000;
-    --surface-color: #121212;
+    --surface-color: rgba(18, 18, 18, 0.9);
     --text-color: #ffffff;
     --border-color: #1a1a1a;
     --hover-color: #004000;
@@ -12,125 +12,81 @@
 body {
     margin: 0;
     padding: 0;
-    font-family: Arial, sans-serif;
-    background-color: var(--background-color);
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: var(--background-color);
+}
+
+.container2 {
+    text-align: center;
+    background-color: var(--surface-color);
+    padding: 20px 30px;
+    border-radius: 12px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
+    max-width: 360px;
+    width: 100%;
+}
+
+.container2 h1 {
+    font-size: 1.5em;
+    margin-bottom: 10px;
+    color: var(--primary-color);
+}
+
+.container2 p {
+    font-size: 1em;
+    margin-bottom: 20px;
+    color: var(--text-color);
+}
+
+.otp-container {
     display: flex;
     justify-content: center;
-    align-items: center;
-    height: 100vh;
+    gap: 8px;
+    margin: 15px 0;
 }
 
-.center-box {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 20px;
-    background-color: transparent;
-    padding: 30px;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5);
-    max-width: 600px;
-    width: 90%;
-}
-
-.left-side, .right-side {
-    width: 45%;
-}
-
-h1 {
-    font-size: 2.0em;
-    margin-bottom: 70px;
-    color: var(--primary-color);
-}
-
-p {
-    font-size: 1em;
-    margin-bottom: 5px;
-    color: var(--text-color);
-}
-
-a {
-    color: var(--accent-color);
-    text-decoration: none;
-    font-weight: bold;
-}
-
-a:hover {
-    color: var(--primary-color);
-    text-decoration: underline;
-}
-
-form {
-    display: flex;
-    flex-direction: column;
-}
-
-input[type="password"] {
-    padding: 10px;
-    font-size: 1em;
-    border: 1px solid var(--border-color);
-    border-radius: 5px;
-    margin-bottom: 20px;
+.otp-input {
+    width: 40px;
+    height: 50px;
+    font-size: 1.2em;
+    text-align: center;
+    border: 2px solid var(--border-color);
+    border-radius: 6px;
     background-color: var(--surface-color);
     color: var(--text-color);
-}
-
-input[type="password"]::placeholder {
-    color: var(--text-color);
-    opacity: 0.7;
-}
-
-/* Highlight when the input is focused */
-input[type="password"]:focus {
     outline: none;
-    border-color: var(--primary-color);
+    transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-/* Highlight when the input has a value */
-input[type="password"]:not(:placeholder-shown) {
+.otp-input:focus {
     border-color: var(--primary-color);
-    color: var(--primary-color);
-}
-
-
-.button-container {
-    margin-top: auto;
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
+    box-shadow: 0 0 6px var(--primary-color);
 }
 
 button {
-    padding: 10px 20px;
+    width: 100%;
+    padding: 10px;
     font-size: 1em;
+    font-weight: bold;
+    color: var(--text-color);
+    background-color: var(--hover-color);
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
     cursor: pointer;
-    transition: background-color 0.3s ease;
 }
 
-button:disabled {
-    opacity: 0.5;
-    cursor: not-allowed;
-}
-
-.btn-primary {
-    background-color: var(--secondary-color);
-    color: var(--text-color);
-}
-
-.btn-primary:hover {
+button:hover {
     background-color: var(--primary-color);
 }
 
-.btn-secondary {
-    background-color: var(--secondary-color);
-    color: var(--text-color);
-}
-
-.btn-secondary:hover {
-    background-color: var(--primary-color);
+.resend-container {
+    width: 100%;
+    margin-top: 15px;
 }
 
 /* Style for the popup messages */
@@ -181,7 +137,6 @@ button:disabled {
     }
 }
 
-
 .background {
     position: fixed; /* Position it behind other content */
     top: 0;
@@ -229,8 +184,3 @@ button:disabled {
     }
 
 }
-
-
-
-
-

@@ -1,23 +1,60 @@
-{% if messages %}
-<div class="messages">
-    {% for message in messages %}
-    <div class="alert {{ message.tags }}">
-        {{ message }}
-    </div>
-    {% endfor %}
-</div>
-{% endif %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>forgot password</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'css/forgot_pass.css' %}">
+    </head>
+    <body>
+        {% if messages %}
+        <div class="messages">
+            {% for message in messages %}
+            <div class="alert {{ message.tags }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
 
-<form method="post">
-    {% csrf_token %}
-    <p>We have sent an OTP to your email: {{ email }}</p>
-    <label for="otp">Enter OTP</label>
-    <input type="text" name="otp" id="otp" placeholder="Enter your OTP" required>
-    <button type="submit">Verify OTP</button>
-</form>
+        <!-- Background Section -->
+        <div class="container">
+            <div class="background">
+                <div class="star-field"></div>
+            <div class="gradient-overlay"></div>
+            <div class="radial-overlay"></div>
+            <div class="letters-container" id="lettersContainer"></div>
+            </div>
+        </div>
 
-<form method="post">
-    {% csrf_token %}
-    <button type="submit" name="resend">Resend OTP</button>
-</form>
+        <div class="container2">
+            <h1>Verify Your Email</h1>
+            <p>We have sent an OTP to your email: {{ email }}</p>
+            <form id="otp-form" method="post">
+                {% csrf_token %}
+                <label for="otp">Enter OTP</label>
+                <div class="otp-container">
+                    <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 'otp2')" id="otp1" autocomplete="off" required>
+                    <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 'otp3')" id="otp2" autocomplete="off" required>
+                    <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 'otp4')" id="otp3" autocomplete="off" required>
+                    <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 'otp5')" id="otp4" autocomplete="off" required>
+                    <input type="text" class="otp-input" maxlength="1" oninput="moveToNext(this, 'otp6')" id="otp5" autocomplete="off" required>
+                    <input type="text" class="otp-input" maxlength="1" id="otp6" oninput="combineOtp()" autocomplete="off" required>
+                </div>       
+                <input type="hidden" id="otp-field" name="otp">
+                <button type="submit">Verify OTP</button>
+            </form>
+            <div class="resend-container">
+                <form method="post">
+                    {% csrf_token %}
+                    <button type="submit" name="resend">Resend OTP</button>
+                </form>
+            </div>
+        </div>   
+        <script src="{% static 'js/forgotpass.js' %}"></script>     
+    </body>
+</html>
 

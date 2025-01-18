@@ -181,7 +181,7 @@ def change_password(request):
 
     return render(request, 'check_pass.html')
 
-@login_required
+@login_required 
 def forgot_password(request):
     if not request.user.is_authenticated:
         return redirect('login')  # Redirect to login if user is not authenticated

@@ -95,16 +95,20 @@
                 </div>
             </div>
 
-            <!-- Profile Content -->
             <div class="tab-content" id="profile">
                 <div class="profile-container">
+                    <!-- Profile Header -->
                     <div class="profile-header">
-                        <div class="header-left">
+                        <div class="profile-photo">
+                            <img src="/media/{{ user.profile_picture }}" alt="Profile Photo">
+                        </div>
+                        <div class="profile-info">
                             <h2>Welcome, {{ user.username }}</h2>
-                            <p>{{ user.email }}</p>
+                            <p>Email: {{ user.email }}</p>
                         </div>
                     </div>
-
+            
+                    <!-- Profile Details -->
                     <div class="profile-details">
                         <div class="profile-item">
                             <i class="fa fa-store"></i>
@@ -130,7 +134,7 @@
                     </div>
                 </div>
             </div>
-
+            
             <!-- Your Products Content -->
             <div class="tab-content" id="your_products">
                 <div class="content-card">

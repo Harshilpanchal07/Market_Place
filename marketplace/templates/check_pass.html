@@ -35,8 +35,6 @@
         <!-- Left Side -->
         <div class="left-side">
             <h1>Password Reset</h1>
-            <!-- Load and display the GIF animation -->
-            <img src="{% static 'images/animation.gif' %}" alt="Animation" class="animation-gif">
             <p>Don't remember your password</p>
             <a href="{% url 'forgot_password' %}">Forgot Password?</a>
         </div>
@@ -45,8 +43,7 @@
         <div class="right-side">
             <form method="POST">
                 {% csrf_token %}
-                <img src="{% static 'images/animation2.gif' %}" alt="Animation" class="animation-gif">
-                <p class="verify-text">Verify your identity by entering your current password.</p>
+                <p class="verify-text">Verify your identity.</p>
                 <input type="password" name="old_password" placeholder="Enter your password" required>
                 <div class="button-container">
                     <button type="button" class="btn-secondary" id="goToProfile">Go to Profile</button>
