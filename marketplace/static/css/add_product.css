@@ -1,0 +1,132 @@
+/* add_product.css */
+:root {
+    --primary: #22c522;
+    --primary-light: #2edc2e;
+    --accent-color: #197419;
+    --background-color: #000000;
+    --dark: #121212;
+    --dark-2: #1a1a1a;
+    --light: #f3f4f6;
+    --white: #ffffff;
+    --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -2px rgba(0, 0, 0, 0.1);
+    --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -4px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--background-color);
+    color: var(--light);
+    margin: 0;
+    padding: 0;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    max-width: 1200px;
+    margin: 40px auto;
+    background-color: var(--dark);
+    border: 1px solid var(--dark-2);
+    border-radius: 8px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+}
+
+.left-panel,
+.right-panel {
+    padding: 20px;
+    color: var(--light);
+}
+
+.left-panel {
+    width: 25%;
+    background-color: var(--dark-2);
+    border-right: 1px solid var(--dark);
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.right-panel {
+    width: 75%;
+    background-color: var(--dark);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+h2, h3 {
+    margin-bottom: 15px;
+    font-weight: bold;
+    color: var(--primary);
+}
+
+.mb-3 {
+    margin-bottom: 20px;
+}
+
+.form-label {
+    font-weight: bold;
+    margin-bottom: 8px;
+    display: inline-block;
+    color: var(--light);
+}
+
+input[type="text"],
+input[type="number"],
+input[type="file"],
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--dark);
+    border-radius: 4px;
+    background-color: var(--dark-2);
+    color: var(--light);
+    box-sizing: border-box;
+    transition: var(--transition);
+}
+
+input:focus,
+textarea:focus {
+    border-color: var(--primary);
+    outline: none;
+    box-shadow: 0 0 5px var(--primary);
+}
+
+button {
+    background-color: var(--primary);
+    color: var(--white);
+    border: none;
+    padding: 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 16px;
+    font-weight: bold;
+    transition: var(--transition);
+    width: 100%;
+}
+
+button:hover {
+    background-color: var(--primary-light);
+}
+
+#viewer-container {
+    background-color: var(--dark-2);
+    border: 1px solid var(--dark);
+    border-radius: 8px;
+    margin-top: 20px;
+    padding: 10px;
+    height: 420px;
+    box-shadow: var(--shadow);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+canvas {
+    width: 100%;
+    height: 100%;
+    border-radius: 8px;
+    outline: none;
+}

@@ -7,24 +7,14 @@
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css">
-    <style>
-        /* Success and Error Message Styling */
-        #successMessage,
-        #errorMessage {
-            max-width: 300px;
-            margin: 0 auto;
-            padding: 10px;
-            border-radius: 5px;
-            margin-top: 20px;
-            font-size: 16px;
-            text-align: center;
-        }
-    </style>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/add_product.css' %}">
 </head>
 <body>
-        <div class="container mt-5">
-            <h2>Add Product</h2>
-            <form id="addProductForm" method="post" enctype="multipart/form-data">
+    <div class="container mt-5">
+        <form id="addProductForm" method="post" enctype="multipart/form-data">
+            <div class="left-panel">
+                <h2>Add Product</h2>
                 <div class="mb-3">
                     <label for="product_name" class="form-label">Product Name</label>
                     <input type="text" id="product_name" name="product_name" class="form-control" required>
@@ -46,8 +36,45 @@
                     <input type="file" id="image" name="image" class="form-control" required>
                 </div>
                 <button type="submit" class="btn btn-primary">Add Product</button>
-            </form>
-        </div>
+            </div>
+            <div class="right-panel">
+                <h3>3D Model Viewer</h3>
+                <div id="viewer-container">
+                    <canvas id="model-viewer" style="width: 100%; height: 400px;"></canvas>
+                </div>
+
+                <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/loaders/GLTFLoader.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/loaders/OBJLoader.js"></script>
+                <script src="https://cdn.jsdelivr.net/npm/three@0.134.0/examples/js/loaders/FBXLoader.js"></script>
+
+                <script>
+                    const scene = new THREE.Scene();
+                    const camera = new THREE.PerspectiveCamera(75, window.innerWidth / 400, 0.1, 1000);
+                    const renderer = new THREE.WebGLRenderer({ canvas: document.getElementById('model-viewer') });
+                    renderer.setSize(window.innerWidth, 400);
+                    document.body.appendChild(renderer.domElement);
+
+                    const light = new THREE.DirectionalLight(0xffffff, 1);
+                    light.position.set(10, 10, 10);
+                    scene.add(light);
+
+                    camera.position.z = 5;
+
+                    const loader = new THREE.GLTFLoader(); // Change loader based on file extension if needed
+                    loader.load('{{ product.file.url }}', (model) => {
+                        scene.add(model.scene || model);
+                    });
+
+                    function animate() {
+                        requestAnimationFrame(animate);
+                        renderer.render(scene, camera);
+                    }
+                    animate();
+                </script>
+            </div>
+        </form>
+    </div>
     
 
         <!-- Success Message -->
@@ -61,48 +88,6 @@
         </div>
     </div>
 
-    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
-    <script>
-        $(document).ready(function () {
-            $('#addProductForm').on('submit', function (e) {
-                e.preventDefault(); // Prevent default form submission
-    
-                // Create a FormData object to include all form data and the file
-                const formData = new FormData(this);
-    
-                $.ajax({
-                    url: '/add-product/', // Backend endpoint
-                    type: 'POST',
-                    headers: {
-                        'X-CSRFToken': '{{ csrf_token }}' // Django CSRF Token
-                    },
-                    data: formData,
-                    processData: false, // Do not process data (required for FormData)
-                    contentType: false, // Do not set content type (required for FormData)
-                    success: function (response) {
-                        // Show success message
-                        $('#successMessage').fadeIn();
-    
-                        // Hide success message after 2 seconds and redirect
-                        setTimeout(function () {
-                            $('#successMessage').fadeOut();
-                            if (response.redirect_url) {
-                                window.location.href = response.redirect_url;
-                            }
-                        }, 2000); // 2 seconds delay before redirect
-                    },
-                    error: function (xhr, status, error) {
-                        // Show error message
-                        $('#errorMessage').fadeIn();
-    
-                        // Hide error message after 2 seconds
-                        setTimeout(function () {
-                            $('#errorMessage').fadeOut();
-                        }, 2000); // 2 seconds delay
-                    }
-                });
-            });
-        });
-    </script>    
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>  
 </body>
 </html>
